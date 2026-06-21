@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f5f7f3; }
+  input::placeholder, textarea::placeholder { color: #9aa69a; }
+  input:focus, textarea:focus { outline: none; border-color: #4f6b57; }
+  @media (max-width: 760px) {
+    .wrap { padding-left: 22px !important; padding-right: 22px !important; }
+    .two-col, .about-grid, .contact-grid, .three-col { grid-template-columns: 1fr !important; }
+    .about-grid { gap: 32px !important; }
+    .contact-grid { gap: 36px !important; }
+    .three-col { gap: 28px !important; }
+    .h1-hero { font-size: 38px !important; line-height: 1.1 !important; }
+    .hero-sub { font-size: 17px !important; }
+    .hero-pad { padding-top: 56px !important; padding-bottom: 52px !important; }
+    .nav-links { gap: 14px !important; }
+    .hide-sm { display: none !important; }
+    .footer-row { flex-direction: column !important; align-items: flex-start !important; }
+    .footer-right { align-items: flex-start !important; text-align: left !important; }
+  }
+</style>
+</helmet>
+
+<div style="background: #f5f7f3; color: #2f352f; font-family: 'Hanken Grotesk', sans-serif; min-height: 100vh;">
+
+  <!-- nav -->
+  <div style="position: sticky; top: 0; z-index: 20; background: rgba(245,247,243,0.88); backdrop-filter: blur(8px); border-bottom: 1px solid #e4ebe0;">
+    <div class="wrap" style="max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="logo.jpeg" alt="Médiation & Dialogue" style="width: 38px; height: 38px; border-radius: 999px; object-fit: cover; display: block;" />
+        <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: #283328;">{{ t.brand }}</span>
+      </div>
+      <div class="nav-links" style="display: flex; gap: 32px; align-items: center; font-size: 14.5px; color: #5a6359; font-weight: 500;">
+        <a class="hide-sm" href="#accueil" style="color: #283328; text-decoration: none;">{{ t.navHome }}</a>
+        <a class="hide-sm" href="#services" style="color: #5a6359; text-decoration: none;">{{ t.navServices }}</a>
+        <a class="hide-sm" href="#apropos" style="color: #5a6359; text-decoration: none;">{{ t.navAbout }}</a>
+        <a href="#contact" style="text-decoration: none; border: 1.5px solid #c4d1c0; padding: 10px 20px; border-radius: 8px; color: #3c4d3e;">{{ t.navContact }}</a>
+        <div style="display: flex; align-items: center; gap: 2px; background: #fff; border: 1.5px solid #d4ddd0; border-radius: 8px; padding: 3px;">
+          <button onClick="{{ setFr }}" style="{{ frBtnStyle }}">FR</button>
+          <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div id="accueil" class="wrap hero-pad" style="max-width: 1180px; margin: 0 auto; padding: 88px 40px 76px; text-align: center;">
+    <div style="display: inline-flex; gap: 10px; align-items: center; background: #e6efe3; color: #4f6b57; padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 30px;">{{ t.badge }}</div>
+    <h1 class="h1-hero" style="font-weight: 700; font-size: 60px; line-height: 1.06; letter-spacing: -0.025em; color: #232a23; margin: 0 auto 26px; max-width: 780px;">{{ t.heroTitle }}</h1>
+    <p class="hero-sub" style="font-size: 19px; line-height: 1.6; color: #5a6359; margin: 0 auto 38px; max-width: 580px;">{{ t.heroSub }}</p>
+    <div style="display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap;">
+      <a href="#contact" style="text-decoration: none; background: #4f6b57; color: #fff; padding: 16px 30px; border-radius: 10px; font-weight: 600; font-size: 15.5px;">{{ t.ctaSend }}</a>
+      <a href="#etapes" style="text-decoration: none; background: #fff; border: 1.5px solid #d4ddd0; color: #3c4d3e; padding: 16px 28px; border-radius: 10px; font-weight: 600; font-size: 15.5px;">{{ t.ctaHow }}</a>
+    </div>
+    <div style="margin-top: 56px; aspect-ratio: 21/9; border-radius: 14px; border: 1px solid #dde6d8; overflow: hidden;">
+      <img src="hero-window.jpg" alt="{{ t.heroCaption }}" style="width: 100%; height: 100%; object-fit: cover; object-position: center 60%; display: block;" />
+    </div>
+  </div>
+
+  <!-- services -->
+  <div id="services" class="wrap" style="max-width: 1180px; margin: 0 auto; padding: 24px 40px 80px;">
+    <div class="two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      <div style="background: #fff; border-radius: 16px; padding: 40px; border: 1px solid #e7ede4;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.1em; margin-bottom: 18px;">01 / SERVICE</div>
+        <h3 style="font-weight: 700; font-size: 25px; color: #232a23; margin: 0 0 12px; letter-spacing: -0.01em;">{{ t.svc1Title }}</h3>
+        <p style="font-size: 15.5px; line-height: 1.64; color: #5a6359; margin: 0 0 22px;">{{ t.svc1Body }}</p>
+        <a href="#contact" style="text-decoration: none; color: #4f6b57; font-weight: 600; font-size: 14.5px;">{{ t.svcMore }}</a>
+      </div>
+      <div style="background: #fff; border-radius: 16px; padding: 40px; border: 1px solid #e7ede4;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.1em; margin-bottom: 18px;">02 / SERVICE</div>
+        <h3 style="font-weight: 700; font-size: 25px; color: #232a23; margin: 0 0 12px; letter-spacing: -0.01em;">{{ t.svc2Title }}</h3>
+        <p style="font-size: 15.5px; line-height: 1.64; color: #5a6359; margin: 0 0 22px;">{{ t.svc2Body }}</p>
+        <a href="#contact" style="text-decoration: none; color: #4f6b57; font-weight: 600; font-size: 14.5px;">{{ t.svcMore }}</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- à propos -->
+  <div id="apropos" style="background: #fff; border-top: 1px solid #e7ede4; border-bottom: 1px solid #e7ede4;">
+    <div class="wrap about-grid" style="max-width: 1180px; margin: 0 auto; padding: 80px 40px; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center;">
+      <div style="aspect-ratio: 4/5; border-radius: 14px; border: 1px solid #dde6d8; overflow: hidden;">
+        <img src="portrait-sylvie.jpg" alt="Sylvie Kuenen" style="width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block;" />
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.1em; margin-bottom: 18px;">{{ t.aboutKicker }}</div>
+        <h2 style="font-weight: 700; font-size: 36px; line-height: 1.12; letter-spacing: -0.02em; color: #232a23; margin: 0 0 22px;">{{ t.aboutTitle }}</h2>
+        <p style="font-size: 16.5px; line-height: 1.64; color: #5a6359; margin: 0 0 18px;">{{ t.aboutP1 }}</p>
+        <p style="font-size: 16.5px; line-height: 1.64; color: #5a6359; margin: 0;">{{ t.aboutP2 }}</p>
+        <div style="margin-top: 22px; display: inline-flex; gap: 9px; align-items: baseline; background: #eef4ec; border-radius: 10px; padding: 12px 18px;">
+          <span style="font-size: 13.5px; font-weight: 600; color: #4f6b57;">{{ t.langsLabel }} :</span>
+          <span style="font-size: 14.5px; color: #3c4d3e;">{{ t.langsValue }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- étapes -->
+  <div id="etapes" style="background: #e9f0e6;">
+    <div class="wrap" style="max-width: 1180px; margin: 0 auto; padding: 76px 40px;">
+      <h2 style="font-weight: 700; font-size: 32px; color: #232a23; margin: 0 0 44px; letter-spacing: -0.02em;">{{ t.stepsTitle }}</h2>
+      <div class="three-col" style="display: grid; grid-template-columns: repeat(3,1fr); gap: 36px;">
+        <div>
+          <div style="font-weight: 700; font-size: 40px; color: #4f6b57; margin-bottom: 12px;">1</div>
+          <h4 style="font-size: 18px; color: #283328; margin: 0 0 8px; font-weight: 600;">{{ t.step1Title }}</h4>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #5a6359; margin: 0;">{{ t.step1Body }}</p>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 40px; color: #4f6b57; margin-bottom: 12px;">2</div>
+          <h4 style="font-size: 18px; color: #283328; margin: 0 0 8px; font-weight: 600;">{{ t.step2Title }}</h4>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #5a6359; margin: 0;">{{ t.step2Body }}</p>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 40px; color: #4f6b57; margin-bottom: 12px;">3</div>
+          <h4 style="font-size: 18px; color: #283328; margin: 0 0 8px; font-weight: 600;">{{ t.step3Title }}</h4>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #5a6359; margin: 0;">{{ t.step3Body }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div id="contact" class="wrap" style="max-width: 1180px; margin: 0 auto; padding: 84px 40px 90px;">
+    <div class="contact-grid" style="display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 64px; align-items: start;">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.1em; margin-bottom: 18px;">{{ t.contactKicker }}</div>
+        <h2 style="font-weight: 700; font-size: 40px; line-height: 1.08; color: #232a23; margin: 0 0 18px; letter-spacing: -0.02em;">{{ t.contactTitle }}</h2>
+        <p style="font-size: 16.5px; color: #5a6359; margin: 0 0 28px; max-width: 420px; line-height: 1.62;">{{ t.contactSub }}</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; font-size: 14.5px; color: #5a6359;">
+          <div style="display: flex; gap: 10px; align-items: center;"><span style="color: #4f6b57;">✓</span> {{ t.b1 }}</div>
+          <div style="display: flex; gap: 10px; align-items: center;"><span style="color: #4f6b57;">✓</span> {{ t.b2 }}</div>
+          <div style="display: flex; gap: 10px; align-items: center;"><span style="color: #4f6b57;">✓</span> {{ t.b3 }}</div>
+        </div>
+        <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid #e7ede4; display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 14.5px; color: #3c4d3e;"><span style="color: #7d9a80; font-weight: 600;">{{ t.addrLabel }} : </span>16 Grand' Rue, 01210 Ferney-Voltaire</div>
+          <div style="font-size: 14.5px; color: #3c4d3e;"><span style="color: #7d9a80; font-weight: 600;">{{ t.telLabel }} : </span><a href="tel:+33644977252" style="color: #4f6b57; text-decoration: none;">06 44 97 72 52</a></div>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #e7ede4; border-radius: 18px; padding: 36px;">
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ submit }}" style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #3c4d3e; margin-bottom: 7px;">{{ t.formName }}</label>
+                <input type="text" value="{{ name }}" onChange="{{ onName }}" placeholder="{{ t.formNamePh }}" style="width: 100%; height: 46px; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 0 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; color: #2f352f;" />
+              </div>
+              <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #3c4d3e; margin-bottom: 7px;">{{ t.formEmail }}</label>
+                <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="{{ t.formEmailPh }}" style="width: 100%; height: 46px; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 0 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; color: #2f352f;" />
+              </div>
+            </div>
+            <div>
+              <label style="display: block; font-size: 13px; font-weight: 600; color: #3c4d3e; margin-bottom: 7px;">{{ t.formSit }}</label>
+              <textarea value="{{ message }}" onChange="{{ onMessage }}" placeholder="{{ t.formSitPh }}" style="width: 100%; height: 120px; resize: vertical; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 12px 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; color: #2f352f; line-height: 1.5;"></textarea>
+            </div>
+            <sc-if value="{{ error }}" hint-placeholder-val="">
+              <div style="font-size: 13.5px; color: #b4502f; background: #f7e9e2; border-radius: 8px; padding: 10px 14px;">{{ error }}</div>
+            </sc-if>
+            <button type="submit" disabled="{{ submitting }}" style="{{ submitBtnStyle }}" style-hover="background: #435d4b;">{{ submitLabel }}</button>
+            <p style="font-size: 12.5px; color: #94a094; margin: 2px 0 0; text-align: center;">{{ t.formPrivacy }}</p>
+          </form>
+        </sc-if>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align: center; padding: 26px 8px;">
+            <div style="width: 56px; height: 56px; border-radius: 999px; background: #e6efe3; color: #4f6b57; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 22px;">✓</div>
+            <h3 style="font-weight: 700; font-size: 24px; color: #232a23; margin: 0 0 12px;">{{ t.sentThanksPre }}{{ name }}.</h3>
+            <p style="font-size: 15.5px; line-height: 1.6; color: #5a6359; margin: 0 auto 24px; max-width: 320px;">{{ t.sentBody }}</p>
+            <button onClick="{{ reset }}" style="background: #fff; border: 1.5px solid #d4ddd0; color: #3c4d3e; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; cursor: pointer;">{{ t.sentAgain }}</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="border-top: 1px solid #e1e8dd; background: #f5f7f3;">
+    <div class="wrap footer-row" style="max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; padding: 36px 40px; flex-wrap: wrap; gap: 24px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-weight: 700; color: #283328; font-size: 15px;">{{ t.brand }}</span>
+        <span style="font-size: 13.5px; color: #7a837a;">16 Grand' Rue, 01210 Ferney-Voltaire</span>
+        <span style="font-size: 13.5px; color: #7a837a;">{{ t.telLabel }} : 06 44 97 72 52</span>
+      </div>
+      <div class="footer-right" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end; text-align: right;">
+        <span style="font-size: 13.5px; color: #7a837a;">{{ t.footerTagline }}</span>
+        <a href="mentions-legales.html" target="_blank" style="font-size: 13px; color: #4f6b57; font-weight: 600; text-decoration: none; letter-spacing: 0.04em;">MENTIONS LÉGALES</a>
+      </div>
+    </div>
+    <div class="wrap" style="max-width: 1180px; margin: 0 auto; padding: 0 40px 30px; font-size: 12.5px; color: #9aa69a;">© 2026 Médiation &amp; Dialogue — Tous droits réservés</div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STRINGS = {
+  fr: {
+    brand: 'Médiation & Dialogue',
+    navHome: 'Accueil', navServices: 'Services', navAbout: 'À propos', navContact: 'Contact',
+    badge: 'Famille & divorce · Conflits de voisinage',
+    heroTitle: 'Une voie plus apaisée à travers le conflit.',
+    heroSub: "Quand le dialogue semble impossible, la médiation ouvre une porte. Un espace impartial et confidentiel où chacun est entendu et où de vrais accords se construisent — sans tribunal.",
+    ctaSend: 'Envoyer une demande', ctaHow: 'Comment ça marche',
+    heroCaption: 'imagerie apaisante — lumière à travers une fenêtre, des mains, une table partagée',
+    svc1Title: 'Famille & divorce',
+    svc1Body: "Modalités de garde, séparation et finances — décidées ensemble, sereinement, avec le bien-être des enfants au centre.",
+    svc2Title: 'Conflits de voisinage',
+    svc2Body: "Bruit, limites de propriété, espaces partagés et tensions accumulées au fil des années — apaisés par une conversation honnête et guidée.",
+    svcMore: 'En savoir plus →',
+    aboutKicker: 'À PROPOS',
+    aboutTitle: 'Une présence neutre, calme et humaine.',
+    aboutP1: "Mon rôle n'est pas de juger ni de décider, mais de tenir un espace stable où chacun peut enfin dire ce qui compte — et bâtir un accord auquel les deux parties croient vraiment.",
+    aboutP2: "Médiateur accrédité, j'accompagne familles et voisins en personne comme en ligne, dans le respect, la confidentialité et sans jamais prendre parti.",
+    aboutCaption: 'portrait du médiateur',
+    langsLabel: 'Langues parlées', langsValue: 'français, anglais et russe',
+    stepsTitle: 'Trois étapes simples',
+    step1Title: 'Prendre contact', step1Body: 'Un premier appel gratuit et sans engagement pour parler de votre situation.',
+    step2Title: "S'asseoir ensemble", step2Body: 'En personne ou en ligne, dans un espace neutre et confidentiel.',
+    step3Title: 'Trouver un accord', step3Body: 'Repartez avec une entente claire et écrite que vous avez façonnée ensemble.',
+    contactKicker: 'CONTACT',
+    contactTitle: 'Quand vous serez prêt.',
+    contactSub: "Envoyez un court message au sujet de votre situation. Je réponds sous un jour ouvré — toujours en toute confidentialité.",
+    b1: 'Premier échange gratuit de 20 minutes', b2: 'Impartial et confidentiel', b3: 'En personne & en ligne',
+    addrLabel: 'Adresse', telLabel: 'Téléphone',
+    formName: 'Nom', formNamePh: 'Votre nom', formEmail: 'E-mail', formEmailPh: 'vous@exemple.fr',
+    formSit: 'Votre situation', formSitPh: 'En quelques mots, ce qui vous amène…',
+    formSubmit: 'Envoyer la demande', formSending: 'Envoi en cours…', formPrivacy: 'Vos informations restent strictement confidentielles.',
+    sentThanksPre: 'Merci, ', sentBody: "Votre message a bien été reçu. Je vous répondrai sous un jour ouvré, en toute confidentialité.",
+    sentAgain: 'Envoyer un autre message',
+    footerTagline: 'Impartial · Confidentiel · En personne & en ligne',
+    errAll: 'Merci de remplir tous les champs.', errEmail: 'Merci de saisir une adresse e-mail valide.',
+    errSend: 'Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.',
+  },
+  en: {
+    brand: 'Mediation & Dialogue',
+    navHome: 'Home', navServices: 'Services', navAbout: 'About', navContact: 'Contact',
+    badge: 'Family & divorce · Neighbor disputes',
+    heroTitle: 'A calmer way through conflict.',
+    heroSub: "When talking feels impossible, mediation opens a door. An impartial, confidential space where both sides are heard and real agreements get made — without court.",
+    ctaSend: 'Send an inquiry', ctaHow: 'How it works',
+    heroCaption: 'calming imagery — light through a window, hands, a shared table',
+    svc1Title: 'Family & divorce',
+    svc1Body: "Parenting arrangements, separation, and finances — decided together, calmly, with the children's wellbeing at the centre.",
+    svc2Title: 'Neighbor disputes',
+    svc2Body: "Noise, boundary lines, shared spaces, and tension built up over years — eased through honest, guided conversation.",
+    svcMore: 'Learn more →',
+    aboutKicker: 'ABOUT',
+    aboutTitle: 'A neutral, calm, human presence.',
+    aboutP1: "My role isn't to judge or decide, but to hold a steady space where each person can finally say what matters — and build an agreement both sides truly believe in.",
+    aboutP2: 'An accredited mediator, I work with families and neighbors in person and online — with respect, confidentiality, and never taking sides.',
+    aboutCaption: 'mediator portrait',
+    langsLabel: 'Languages spoken', langsValue: 'French, English and Russian',
+    stepsTitle: 'Three simple steps',
+    step1Title: 'Reach out', step1Body: 'A free, no-pressure intro call to talk through your situation.',
+    step2Title: 'Sit down together', step2Body: 'In person or online, in a neutral, confidential space.',
+    step3Title: 'Reach an agreement', step3Body: 'Leave with a clear, written understanding you both shaped.',
+    contactKicker: 'CONTACT',
+    contactTitle: "Whenever you're ready.",
+    contactSub: 'Send a short message about your situation. I reply within one working day — always confidential.',
+    b1: 'Free 20-minute intro call', b2: 'Impartial and confidential', b3: 'In person & online',
+    addrLabel: 'Address', telLabel: 'Phone',
+    formName: 'Name', formNamePh: 'Your name', formEmail: 'Email', formEmailPh: 'you@example.com',
+    formSit: 'Your situation', formSitPh: 'In a few words, what brings you here…',
+    formSubmit: 'Send inquiry', formSending: 'Sending…', formPrivacy: 'Your information stays strictly confidential.',
+    sentThanksPre: 'Thank you, ', sentBody: "Your message has been received. I'll reply within one working day, in full confidence.",
+    sentAgain: 'Send another message',
+    footerTagline: 'Impartial · Confidential · In person & online',
+    errAll: 'Please fill in all fields.', errEmail: 'Please enter a valid email address.',
+    errSend: 'Something went wrong. Please try again or call us.',
+  },
+};
+
+// To activate email delivery:
+// 1. Go to https://formspree.io and create a free account
+// 2. Create a new form and set the destination email to nyounae@yahoo.com
+// 3. Replace YOUR_FORM_ID below with the ID from your Formspree dashboard
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+class Component extends DCLogic {
+  state = { lang: 'fr', name: '', email: '', message: '', sent: false, submitting: false, error: '' };
+
+  renderVals() {
+    const t = STRINGS[this.state.lang];
+    const set = (k) => (e) => this.setState({ [k]: e.target.value, error: '' });
+    const submit = (e) => {
+      e.preventDefault();
+      const { name, email, message } = this.state;
+      const tt = STRINGS[this.state.lang];
+      if (!name.trim() || !email.trim() || !message.trim()) {
+        this.setState({ error: tt.errAll });
+        return;
+      }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) {
+        this.setState({ error: tt.errEmail });
+        return;
+      }
+      this.setState({ submitting: true, error: '' });
+      fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), message: message.trim() }),
+      })
+        .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+        .then(({ ok, data }) => {
+          if (ok) {
+            this.setState({ sent: true, submitting: false, error: '' });
+          } else {
+            this.setState({ submitting: false, error: (data && data.error) || STRINGS[this.state.lang].errSend });
+          }
+        })
+        .catch(() => {
+          this.setState({ submitting: false, error: STRINGS[this.state.lang].errSend });
+        });
+    };
+    const baseBtn = "border: none; background: transparent; padding: 6px 12px; border-radius: 6px; font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; letter-spacing: 0.03em;";
+    const active = "background: #4f6b57; color: #fff;";
+    const inactive = "color: #6c7a6c;";
+    return {
+      t,
+      name: this.state.name, email: this.state.email, message: this.state.message,
+      sent: this.state.sent, notSent: !this.state.sent, error: this.state.error,
+      submitting: this.state.submitting,
+      submitLabel: this.state.submitting ? t.formSending : t.formSubmit,
+      submitBtnStyle: 'margin-top: 4px; background: ' + (this.state.submitting ? '#7d9a80' : '#4f6b57') + '; color: #fff; border: none; padding: 15px; border-radius: 10px; font-weight: 600; font-size: 15.5px; font-family: \'Hanken Grotesk\', sans-serif; cursor: ' + (this.state.submitting ? 'not-allowed' : 'pointer') + '; opacity: ' + (this.state.submitting ? '0.7' : '1') + ';',
+      onName: set('name'), onEmail: set('email'), onMessage: set('message'),
+      submit,
+      reset: () => this.setState({ name: '', email: '', message: '', sent: false, submitting: false, error: '' }),
+      setFr: () => this.setState({ lang: 'fr', error: '' }),
+      setEn: () => this.setState({ lang: 'en', error: '' }),
+      frBtnStyle: baseBtn + (this.state.lang === 'fr' ? active : inactive),
+      enBtnStyle: baseBtn + (this.state.lang === 'en' ? active : inactive),
+    };
+  }
+}
+</script>
+</body>
+</html>
