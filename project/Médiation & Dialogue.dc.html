@@ -168,7 +168,7 @@
             <sc-if value="{{ error }}" hint-placeholder-val="">
               <div style="font-size: 13.5px; color: #b4502f; background: #f7e9e2; border-radius: 8px; padding: 10px 14px;">{{ error }}</div>
             </sc-if>
-            <button type="submit" style="margin-top: 4px; background: #4f6b57; color: #fff; border: none; padding: 15px; border-radius: 10px; font-weight: 600; font-size: 15.5px; font-family: 'Hanken Grotesk', sans-serif; cursor: pointer;" style-hover="background: #435d4b;">{{ t.formSubmit }}</button>
+            <button type="submit" disabled="{{ submitting }}" style="{{ submitBtnStyle }}" style-hover="background: #435d4b;">{{ submitLabel }}</button>
             <p style="font-size: 12.5px; color: #94a094; margin: 2px 0 0; text-align: center;">{{ t.formPrivacy }}</p>
           </form>
         </sc-if>
@@ -234,11 +234,12 @@ const STRINGS = {
     addrLabel: 'Adresse', telLabel: 'Téléphone',
     formName: 'Nom', formNamePh: 'Votre nom', formEmail: 'E-mail', formEmailPh: 'vous@exemple.fr',
     formSit: 'Votre situation', formSitPh: 'En quelques mots, ce qui vous amène…',
-    formSubmit: 'Envoyer la demande', formPrivacy: 'Vos informations restent strictement confidentielles.',
+    formSubmit: 'Envoyer la demande', formSending: 'Envoi en cours…', formPrivacy: 'Vos informations restent strictement confidentielles.',
     sentThanksPre: 'Merci, ', sentBody: "Votre message a bien été reçu. Je vous répondrai sous un jour ouvré, en toute confidentialité.",
     sentAgain: 'Envoyer un autre message',
     footerTagline: 'Impartial · Confidentiel · En personne & en ligne',
     errAll: 'Merci de remplir tous les champs.', errEmail: 'Merci de saisir une adresse e-mail valide.',
+    errSend: 'Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.',
   },
   en: {
     brand: 'Mediation & Dialogue',
@@ -270,16 +271,23 @@ const STRINGS = {
     addrLabel: 'Address', telLabel: 'Phone',
     formName: 'Name', formNamePh: 'Your name', formEmail: 'Email', formEmailPh: 'you@example.com',
     formSit: 'Your situation', formSitPh: 'In a few words, what brings you here…',
-    formSubmit: 'Send inquiry', formPrivacy: 'Your information stays strictly confidential.',
+    formSubmit: 'Send inquiry', formSending: 'Sending…', formPrivacy: 'Your information stays strictly confidential.',
     sentThanksPre: 'Thank you, ', sentBody: "Your message has been received. I'll reply within one working day, in full confidence.",
     sentAgain: 'Send another message',
     footerTagline: 'Impartial · Confidential · In person & online',
     errAll: 'Please fill in all fields.', errEmail: 'Please enter a valid email address.',
+    errSend: 'Something went wrong. Please try again or call us.',
   },
 };
 
+// To activate email delivery:
+// 1. Go to https://formspree.io and create a free account
+// 2. Create a new form and set the destination email to nyounae@yahoo.com
+// 3. Replace YOUR_FORM_ID below with the ID from your Formspree dashboard
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
 class Component extends DCLogic {
-  state = { lang: 'fr', name: '', email: '', message: '', sent: false, error: '' };
+  state = { lang: 'fr', name: '', email: '', message: '', sent: false, submitting: false, error: '' };
 
   renderVals() {
     const t = STRINGS[this.state.lang];
@@ -296,7 +304,23 @@ class Component extends DCLogic {
         this.setState({ error: tt.errEmail });
         return;
       }
-      this.setState({ sent: true, error: '' });
+      this.setState({ submitting: true, error: '' });
+      fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), message: message.trim() }),
+      })
+        .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+        .then(({ ok, data }) => {
+          if (ok) {
+            this.setState({ sent: true, submitting: false, error: '' });
+          } else {
+            this.setState({ submitting: false, error: (data && data.error) || STRINGS[this.state.lang].errSend });
+          }
+        })
+        .catch(() => {
+          this.setState({ submitting: false, error: STRINGS[this.state.lang].errSend });
+        });
     };
     const baseBtn = "border: none; background: transparent; padding: 6px 12px; border-radius: 6px; font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; letter-spacing: 0.03em;";
     const active = "background: #4f6b57; color: #fff;";
@@ -305,9 +329,12 @@ class Component extends DCLogic {
       t,
       name: this.state.name, email: this.state.email, message: this.state.message,
       sent: this.state.sent, notSent: !this.state.sent, error: this.state.error,
+      submitting: this.state.submitting,
+      submitLabel: this.state.submitting ? t.formSending : t.formSubmit,
+      submitBtnStyle: 'margin-top: 4px; background: ' + (this.state.submitting ? '#7d9a80' : '#4f6b57') + '; color: #fff; border: none; padding: 15px; border-radius: 10px; font-weight: 600; font-size: 15.5px; font-family: \'Hanken Grotesk\', sans-serif; cursor: ' + (this.state.submitting ? 'not-allowed' : 'pointer') + '; opacity: ' + (this.state.submitting ? '0.7' : '1') + ';',
       onName: set('name'), onEmail: set('email'), onMessage: set('message'),
       submit,
-      reset: () => this.setState({ name: '', email: '', message: '', sent: false, error: '' }),
+      reset: () => this.setState({ name: '', email: '', message: '', sent: false, submitting: false, error: '' }),
       setFr: () => this.setState({ lang: 'fr', error: '' }),
       setEn: () => this.setState({ lang: 'en', error: '' }),
       frBtnStyle: baseBtn + (this.state.lang === 'fr' ? active : inactive),
