@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Médiation &amp; Dialogue — Médiation à Ferney-Voltaire</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -10,11 +11,25 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
   body { margin: 0; background: #f5f7f3; }
   input::placeholder, textarea::placeholder { color: #9aa69a; }
+  /* Framed photos: soft frame, a little depth, gentle zoom on hover / scroll */
+  .photo-frame { padding: 8px; background: #fff; border: 1px solid #dde6d8; border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(35, 42, 35, 0.08); transition: box-shadow 0.5s ease, transform 0.5s ease; }
+  .photo-frame:hover { box-shadow: 0 24px 56px rgba(35, 42, 35, 0.16); transform: translateY(-3px); }
+  .photo-clip { border-radius: 12px; overflow: hidden; isolation: isolate; transform: translateZ(0); }
+  .photo-img { width: 100%; height: 100%; object-fit: cover; display: block;
+    transform: scale(var(--zoom, 1)); transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); will-change: transform; }
+  .photo-frame:hover .photo-img { transform: scale(calc(var(--zoom, 1) + 0.04)); }
+  @media (prefers-reduced-motion: reduce) {
+    .photo-frame, .photo-img { transition: none !important; }
+    .photo-frame:hover { transform: none; }
+    .photo-frame:hover .photo-img { transform: scale(var(--zoom, 1)); }
+  }
   input:focus, textarea:focus { outline: none; border-color: #4f6b57; }
   @media (max-width: 760px) {
     .wrap { padding-left: 22px !important; padding-right: 22px !important; }
@@ -26,30 +41,37 @@
     .hero-sub { font-size: 17px !important; }
     .hero-pad { padding-top: 56px !important; padding-bottom: 52px !important; }
     .nav-links { gap: 14px !important; }
+    .lang-btn { padding: 5px 8px !important; font-size: 12px !important; }
     .hide-sm { display: none !important; }
     .footer-row { flex-direction: column !important; align-items: flex-start !important; }
     .footer-right { align-items: flex-start !important; text-align: left !important; }
   }
+  @media (max-width: 560px) {
+    .brand-text { display: none !important; }
+    .nav-contact { padding: 8px 14px !important; }
+  }
 </style>
 </helmet>
 
-<div style="background: #f5f7f3; color: #2f352f; font-family: 'Hanken Grotesk', sans-serif; min-height: 100vh;">
+<div style="background: #f5f7f3; color: #2f352f; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; min-height: 100vh;">
 
   <!-- nav -->
   <div style="position: sticky; top: 0; z-index: 20; background: rgba(245,247,243,0.88); backdrop-filter: blur(8px); border-bottom: 1px solid #e4ebe0;">
     <div class="wrap" style="max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px;">
-      <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="#accueil" onClick="{{ goHome }}" title="{{ t.navHome }}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
         <img src="logo.jpeg" alt="Médiation & Dialogue" style="width: 38px; height: 38px; border-radius: 999px; object-fit: cover; display: block;" />
-        <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: #283328;">{{ t.brand }}</span>
-      </div>
+        <span class="brand-text" style="font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: #283328;">{{ t.brand }}</span>
+      </a>
       <div class="nav-links" style="display: flex; gap: 32px; align-items: center; font-size: 14.5px; color: #5a6359; font-weight: 500;">
-        <a class="hide-sm" href="#accueil" style="color: #283328; text-decoration: none;">{{ t.navHome }}</a>
-        <a class="hide-sm" href="#services" style="color: #5a6359; text-decoration: none;">{{ t.navServices }}</a>
-        <a class="hide-sm" href="#apropos" style="color: #5a6359; text-decoration: none;">{{ t.navAbout }}</a>
-        <a href="#contact" style="text-decoration: none; border: 1.5px solid #c4d1c0; padding: 10px 20px; border-radius: 8px; color: #3c4d3e;">{{ t.navContact }}</a>
+        <a class="hide-sm" href="#accueil" onClick="{{ goHome }}" style="{{ navHomeStyle }}">{{ t.navHome }}</a>
+        <a class="hide-sm" href="#services" onClick="{{ goServices }}" style="{{ navServicesStyle }}">{{ t.navServices }}</a>
+        <a class="hide-sm" href="#apropos" onClick="{{ goAbout }}" style="{{ navAboutStyle }}">{{ t.navAbout }}</a>
+        <a class="nav-contact" href="#contact" onClick="{{ goContact }}" style="{{ navContactStyle }}">{{ t.navContact }}</a>
         <div style="display: flex; align-items: center; gap: 2px; background: #fff; border: 1.5px solid #d4ddd0; border-radius: 8px; padding: 3px;">
-          <button onClick="{{ setFr }}" style="{{ frBtnStyle }}">FR</button>
-          <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+          <button class="lang-btn" onClick="{{ setFr }}" style="{{ frBtnStyle }}" aria-label="Français">FR</button>
+          <button class="lang-btn" onClick="{{ setEn }}" style="{{ enBtnStyle }}" aria-label="English">EN</button>
+          <button class="lang-btn" onClick="{{ setDe }}" style="{{ deBtnStyle }}" aria-label="Deutsch">DE</button>
+          <button class="lang-btn" onClick="{{ setRu }}" style="{{ ruBtnStyle }}" aria-label="Русский">RU</button>
         </div>
       </div>
     </div>
@@ -57,15 +79,17 @@
 
   <!-- hero -->
   <div id="accueil" class="wrap hero-pad" style="max-width: 1180px; margin: 0 auto; padding: 88px 40px 76px; text-align: center;">
-    <div style="display: inline-flex; gap: 10px; align-items: center; background: #e6efe3; color: #4f6b57; padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 30px;">{{ t.badge }}</div>
+    <div style="display: inline-flex; gap: 10px; align-items: center; background: #e6efe3; color: #4f6b57; padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 30px; text-align: center;">{{ t.badge }}</div>
     <h1 class="h1-hero" style="font-weight: 700; font-size: 60px; line-height: 1.06; letter-spacing: -0.025em; color: #232a23; margin: 0 auto 26px; max-width: 780px;">{{ t.heroTitle }}</h1>
     <p class="hero-sub" style="font-size: 19px; line-height: 1.6; color: #5a6359; margin: 0 auto 38px; max-width: 580px;">{{ t.heroSub }}</p>
     <div style="display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap;">
       <a href="#contact" style="text-decoration: none; background: #4f6b57; color: #fff; padding: 16px 30px; border-radius: 10px; font-weight: 600; font-size: 15.5px;">{{ t.ctaSend }}</a>
       <a href="#etapes" style="text-decoration: none; background: #fff; border: 1.5px solid #d4ddd0; color: #3c4d3e; padding: 16px 28px; border-radius: 10px; font-weight: 600; font-size: 15.5px;">{{ t.ctaHow }}</a>
     </div>
-    <div style="margin-top: 56px; aspect-ratio: 21/9; border-radius: 14px; border: 1px solid #dde6d8; overflow: hidden;">
-      <img src="hero-window.jpg" alt="{{ t.heroCaption }}" style="width: 100%; height: 100%; object-fit: cover; object-position: center 60%; display: block;" />
+    <div id="hero-frame" class="photo-frame" style="margin-top: 56px;">
+      <div class="photo-clip" style="aspect-ratio: 21/9;">
+        <img class="photo-img" src="hero-window.jpg" alt="{{ t.heroCaption }}" style="object-position: center 60%;" />
+      </div>
     </div>
   </div>
 
@@ -84,14 +108,28 @@
         <p style="font-size: 15.5px; line-height: 1.64; color: #5a6359; margin: 0 0 22px;">{{ t.svc2Body }}</p>
         <a href="#contact" style="text-decoration: none; color: #4f6b57; font-weight: 600; font-size: 14.5px;">{{ t.svcMore }}</a>
       </div>
+      <div style="background: #fff; border-radius: 16px; padding: 40px; border: 1px solid #e7ede4;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.1em; margin-bottom: 18px;">03 / SERVICE</div>
+        <h3 style="font-weight: 700; font-size: 25px; color: #232a23; margin: 0 0 12px; letter-spacing: -0.01em;">{{ t.svc3Title }}</h3>
+        <p style="font-size: 15.5px; line-height: 1.64; color: #5a6359; margin: 0 0 22px;">{{ t.svc3Body }}</p>
+        <a href="#contact" style="text-decoration: none; color: #4f6b57; font-weight: 600; font-size: 14.5px;">{{ t.svcMore }}</a>
+      </div>
+      <div style="background: #fff; border-radius: 16px; padding: 40px; border: 1px solid #e7ede4;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.1em; margin-bottom: 18px;">04 / SERVICE</div>
+        <h3 style="font-weight: 700; font-size: 25px; color: #232a23; margin: 0 0 12px; letter-spacing: -0.01em;">{{ t.svc4Title }}</h3>
+        <p style="font-size: 15.5px; line-height: 1.64; color: #5a6359; margin: 0 0 22px;">{{ t.svc4Body }}</p>
+        <a href="#contact" style="text-decoration: none; color: #4f6b57; font-weight: 600; font-size: 14.5px;">{{ t.svcMore }}</a>
+      </div>
     </div>
   </div>
 
   <!-- à propos -->
   <div id="apropos" style="background: #fff; border-top: 1px solid #e7ede4; border-bottom: 1px solid #e7ede4;">
     <div class="wrap about-grid" style="max-width: 1180px; margin: 0 auto; padding: 80px 40px; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center;">
-      <div style="aspect-ratio: 4/5; border-radius: 14px; border: 1px solid #dde6d8; overflow: hidden;">
-        <img src="portrait-sylvie.jpg" alt="Sylvie Kuenen" style="width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block;" />
+      <div class="photo-frame">
+        <div class="photo-clip" style="aspect-ratio: 4/5;">
+          <img class="photo-img" src="portrait-sylvie.jpg" alt="Sylvie Kuenen" style="object-position: center 25%;" />
+        </div>
       </div>
       <div>
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.1em; margin-bottom: 18px;">{{ t.aboutKicker }}</div>
@@ -99,7 +137,7 @@
         <p style="font-size: 16.5px; line-height: 1.64; color: #5a6359; margin: 0 0 18px;">{{ t.aboutP1 }}</p>
         <p style="font-size: 16.5px; line-height: 1.64; color: #5a6359; margin: 0;">{{ t.aboutP2 }}</p>
         <div style="margin-top: 22px; display: inline-flex; gap: 9px; align-items: baseline; background: #eef4ec; border-radius: 10px; padding: 12px 18px;">
-          <span style="font-size: 13.5px; font-weight: 600; color: #4f6b57;">{{ t.langsLabel }} :</span>
+          <span style="font-size: 13.5px; font-weight: 600; color: #4f6b57;">{{ t.langsLabel }}</span>
           <span style="font-size: 14.5px; color: #3c4d3e;">{{ t.langsValue }}</span>
         </div>
       </div>
@@ -143,8 +181,8 @@
           <div style="display: flex; gap: 10px; align-items: center;"><span style="color: #4f6b57;">✓</span> {{ t.b3 }}</div>
         </div>
         <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid #e7ede4; display: flex; flex-direction: column; gap: 9px;">
-          <div style="font-size: 14.5px; color: #3c4d3e;"><span style="color: #7d9a80; font-weight: 600;">{{ t.addrLabel }} : </span>16 Grand' Rue, 01210 Ferney-Voltaire</div>
-          <div style="font-size: 14.5px; color: #3c4d3e;"><span style="color: #7d9a80; font-weight: 600;">{{ t.telLabel }} : </span><a href="tel:+33644977252" style="color: #4f6b57; text-decoration: none;">06 44 97 72 52</a></div>
+          <div style="font-size: 14.5px; color: #3c4d3e;"><span style="color: #7d9a80; font-weight: 600;">{{ t.addrLabel }}</span>16 Grand' Rue, 01210 Ferney-Voltaire</div>
+          <div style="font-size: 14.5px; color: #3c4d3e;"><span style="color: #7d9a80; font-weight: 600;">{{ t.telLabel }}</span><a href="tel:+33644977252" style="color: #4f6b57; text-decoration: none;">06 44 97 72 52</a></div>
         </div>
       </div>
 
@@ -154,16 +192,16 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div>
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #3c4d3e; margin-bottom: 7px;">{{ t.formName }}</label>
-                <input type="text" value="{{ name }}" onChange="{{ onName }}" placeholder="{{ t.formNamePh }}" style="width: 100%; height: 46px; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 0 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; color: #2f352f;" />
+                <input type="text" value="{{ name }}" onChange="{{ onName }}" placeholder="{{ t.formNamePh }}" style="width: 100%; height: 46px; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 0 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; color: #2f352f;" />
               </div>
               <div>
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #3c4d3e; margin-bottom: 7px;">{{ t.formEmail }}</label>
-                <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="{{ t.formEmailPh }}" style="width: 100%; height: 46px; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 0 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; color: #2f352f;" />
+                <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="{{ t.formEmailPh }}" style="width: 100%; height: 46px; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 0 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; color: #2f352f;" />
               </div>
             </div>
             <div>
               <label style="display: block; font-size: 13px; font-weight: 600; color: #3c4d3e; margin-bottom: 7px;">{{ t.formSit }}</label>
-              <textarea value="{{ message }}" onChange="{{ onMessage }}" placeholder="{{ t.formSitPh }}" style="width: 100%; height: 120px; resize: vertical; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 12px 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; color: #2f352f; line-height: 1.5;"></textarea>
+              <textarea value="{{ message }}" onChange="{{ onMessage }}" placeholder="{{ t.formSitPh }}" style="width: 100%; height: 120px; resize: vertical; border-radius: 9px; border: 1.5px solid #dde6d8; background: #f7faf5; padding: 12px 14px; font-size: 14.5px; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; color: #2f352f; line-height: 1.5;"></textarea>
             </div>
             <sc-if value="{{ error }}" hint-placeholder-val="">
               <div style="font-size: 13.5px; color: #b4502f; background: #f7e9e2; border-radius: 8px; padding: 10px 14px;">{{ error }}</div>
@@ -177,7 +215,7 @@
             <div style="width: 56px; height: 56px; border-radius: 999px; background: #e6efe3; color: #4f6b57; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 22px;">✓</div>
             <h3 style="font-weight: 700; font-size: 24px; color: #232a23; margin: 0 0 12px;">{{ t.sentThanksPre }}{{ name }}.</h3>
             <p style="font-size: 15.5px; line-height: 1.6; color: #5a6359; margin: 0 auto 24px; max-width: 320px;">{{ t.sentBody }}</p>
-            <button onClick="{{ reset }}" style="background: #fff; border: 1.5px solid #d4ddd0; color: #3c4d3e; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 14.5px; font-family: 'Hanken Grotesk', sans-serif; cursor: pointer;">{{ t.sentAgain }}</button>
+            <button onClick="{{ reset }}" style="background: #fff; border: 1.5px solid #d4ddd0; color: #3c4d3e; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 14.5px; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; cursor: pointer;">{{ t.sentAgain }}</button>
           </div>
         </sc-if>
       </div>
@@ -190,14 +228,14 @@
       <div style="display: flex; flex-direction: column; gap: 6px;">
         <span style="font-weight: 700; color: #283328; font-size: 15px;">{{ t.brand }}</span>
         <span style="font-size: 13.5px; color: #7a837a;">16 Grand' Rue, 01210 Ferney-Voltaire</span>
-        <span style="font-size: 13.5px; color: #7a837a;">{{ t.telLabel }} : 06 44 97 72 52</span>
+        <span style="font-size: 13.5px; color: #7a837a;">{{ t.telLabel }}06 44 97 72 52</span>
       </div>
       <div class="footer-right" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end; text-align: right;">
         <span style="font-size: 13.5px; color: #7a837a;">{{ t.footerTagline }}</span>
-        <a href="mentions-legales.html" target="_blank" style="font-size: 13px; color: #4f6b57; font-weight: 600; text-decoration: none; letter-spacing: 0.04em;">MENTIONS LÉGALES</a>
+        <a href="mentions-legales.html" target="_blank" style="font-size: 13px; color: #4f6b57; font-weight: 600; text-decoration: none; letter-spacing: 0.04em;">{{ t.legalLink }}</a>
       </div>
     </div>
-    <div class="wrap" style="max-width: 1180px; margin: 0 auto; padding: 0 40px 30px; font-size: 12.5px; color: #9aa69a;">© 2026 Médiation &amp; Dialogue — Tous droits réservés</div>
+    <div class="wrap" style="max-width: 1180px; margin: 0 auto; padding: 0 40px 30px; font-size: 12.5px; color: #9aa69a;">{{ t.copyright }}</div>
   </div>
 
 </div>
@@ -205,9 +243,10 @@
 <script type="text/x-dc" data-dc-script>
 const STRINGS = {
   fr: {
+    pageTitle: 'Médiation & Dialogue — Médiation à Ferney-Voltaire',
     brand: 'Médiation & Dialogue',
     navHome: 'Accueil', navServices: 'Services', navAbout: 'À propos', navContact: 'Contact',
-    badge: 'Famille & divorce · Conflits de voisinage',
+    badge: 'Famille & divorce · Couple · Conflits de voisinage · Conflits au travail',
     heroTitle: 'Une voie plus apaisée à travers le conflit.',
     heroSub: "Quand le dialogue semble impossible, la médiation ouvre une porte. Un espace impartial et confidentiel où chacun est entendu et où de vrais accords se construisent — sans tribunal.",
     ctaSend: 'Envoyer une demande', ctaHow: 'Comment ça marche',
@@ -216,13 +255,17 @@ const STRINGS = {
     svc1Body: "Modalités de garde, séparation et finances — décidées ensemble, sereinement, avec le bien-être des enfants au centre.",
     svc2Title: 'Conflits de voisinage',
     svc2Body: "Bruit, limites de propriété, espaces partagés et tensions accumulées au fil des années — apaisés par une conversation honnête et guidée.",
+    svc3Title: 'Conflits au travail',
+    svc3Body: "Tensions entre collègues, avec la hiérarchie ou au sein d'une équipe — désamorcées dans un cadre neutre, pour retrouver une collaboration sereine et durable.",
+    svc4Title: 'Couple',
+    svc4Body: "Difficultés de communication, désaccords qui s'installent, décisions à prendre à deux — un espace pour se réécouter et avancer ensemble, que ce soit pour rester unis ou pour se séparer sereinement.",
     svcMore: 'En savoir plus →',
     aboutKicker: 'À PROPOS',
     aboutTitle: 'Une présence neutre, calme et humaine.',
     aboutP1: "Mon rôle n'est pas de juger ni de décider, mais de tenir un espace stable où chacun peut enfin dire ce qui compte — et bâtir un accord auquel les deux parties croient vraiment.",
-    aboutP2: "Médiateur accrédité, j'accompagne familles et voisins en personne comme en ligne, dans le respect, la confidentialité et sans jamais prendre parti.",
+    aboutP2: "Médiateur accrédité, j'accompagne familles, couples, voisins et équipes de travail en personne comme en ligne, dans le respect, la confidentialité et sans jamais prendre parti.",
     aboutCaption: 'portrait du médiateur',
-    langsLabel: 'Langues parlées', langsValue: 'français, anglais et russe',
+    langsLabel: 'Langues parlées :', langsValue: 'allemand, anglais, français et russe',
     stepsTitle: 'Trois étapes simples',
     step1Title: 'Prendre contact', step1Body: 'Un premier appel gratuit et sans engagement pour parler de votre situation.',
     step2Title: "S'asseoir ensemble", step2Body: 'En personne ou en ligne, dans un espace neutre et confidentiel.',
@@ -231,20 +274,24 @@ const STRINGS = {
     contactTitle: 'Quand vous serez prêt.',
     contactSub: "Envoyez un court message au sujet de votre situation. Je réponds sous un jour ouvré — toujours en toute confidentialité.",
     b1: 'Premier échange gratuit de 20 minutes', b2: 'Impartial et confidentiel', b3: 'En personne & en ligne',
-    addrLabel: 'Adresse', telLabel: 'Téléphone',
+    addrLabel: 'Adresse : ', telLabel: 'Téléphone : ',
     formName: 'Nom', formNamePh: 'Votre nom', formEmail: 'E-mail', formEmailPh: 'vous@exemple.fr',
     formSit: 'Votre situation', formSitPh: 'En quelques mots, ce qui vous amène…',
     formSubmit: 'Envoyer la demande', formSending: 'Envoi en cours…', formPrivacy: 'Vos informations restent strictement confidentielles.',
+    formSubject: 'Nouvelle demande via le site Médiation & Dialogue',
     sentThanksPre: 'Merci, ', sentBody: "Votre message a bien été reçu. Je vous répondrai sous un jour ouvré, en toute confidentialité.",
     sentAgain: 'Envoyer un autre message',
     footerTagline: 'Impartial · Confidentiel · En personne & en ligne',
+    legalLink: 'MENTIONS LÉGALES',
+    copyright: '© 2026 Médiation & Dialogue — Tous droits réservés',
     errAll: 'Merci de remplir tous les champs.', errEmail: 'Merci de saisir une adresse e-mail valide.',
     errSend: 'Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.',
   },
   en: {
+    pageTitle: 'Mediation & Dialogue — Mediation in Ferney-Voltaire',
     brand: 'Mediation & Dialogue',
     navHome: 'Home', navServices: 'Services', navAbout: 'About', navContact: 'Contact',
-    badge: 'Family & divorce · Neighbor disputes',
+    badge: 'Family & divorce · Couples · Neighbor disputes · Workplace conflicts',
     heroTitle: 'A calmer way through conflict.',
     heroSub: "When talking feels impossible, mediation opens a door. An impartial, confidential space where both sides are heard and real agreements get made — without court.",
     ctaSend: 'Send an inquiry', ctaHow: 'How it works',
@@ -253,13 +300,17 @@ const STRINGS = {
     svc1Body: "Parenting arrangements, separation, and finances — decided together, calmly, with the children's wellbeing at the centre.",
     svc2Title: 'Neighbor disputes',
     svc2Body: "Noise, boundary lines, shared spaces, and tension built up over years — eased through honest, guided conversation.",
+    svc3Title: 'Workplace conflicts',
+    svc3Body: "Tension between colleagues, with management, or within a team — defused in a neutral setting, so that calm, lasting collaboration can resume.",
+    svc4Title: 'Couples',
+    svc4Body: "Communication breakdowns, disagreements that settle in, decisions to make as a pair — a space to hear each other again and move forward together, whether that means staying together or parting ways calmly.",
     svcMore: 'Learn more →',
     aboutKicker: 'ABOUT',
     aboutTitle: 'A neutral, calm, human presence.',
     aboutP1: "My role isn't to judge or decide, but to hold a steady space where each person can finally say what matters — and build an agreement both sides truly believe in.",
-    aboutP2: 'An accredited mediator, I work with families and neighbors in person and online — with respect, confidentiality, and never taking sides.',
+    aboutP2: 'An accredited mediator, I work with families, couples, neighbors and workplace teams in person and online — with respect, confidentiality, and never taking sides.',
     aboutCaption: 'mediator portrait',
-    langsLabel: 'Languages spoken', langsValue: 'French, English and Russian',
+    langsLabel: 'Languages spoken:', langsValue: 'English, French, German and Russian',
     stepsTitle: 'Three simple steps',
     step1Title: 'Reach out', step1Body: 'A free, no-pressure intro call to talk through your situation.',
     step2Title: 'Sit down together', step2Body: 'In person or online, in a neutral, confidential space.',
@@ -268,26 +319,202 @@ const STRINGS = {
     contactTitle: "Whenever you're ready.",
     contactSub: 'Send a short message about your situation. I reply within one working day — always confidential.',
     b1: 'Free 20-minute intro call', b2: 'Impartial and confidential', b3: 'In person & online',
-    addrLabel: 'Address', telLabel: 'Phone',
+    addrLabel: 'Address: ', telLabel: 'Phone: ',
     formName: 'Name', formNamePh: 'Your name', formEmail: 'Email', formEmailPh: 'you@example.com',
     formSit: 'Your situation', formSitPh: 'In a few words, what brings you here…',
     formSubmit: 'Send inquiry', formSending: 'Sending…', formPrivacy: 'Your information stays strictly confidential.',
+    formSubject: 'New inquiry via the Mediation & Dialogue website',
     sentThanksPre: 'Thank you, ', sentBody: "Your message has been received. I'll reply within one working day, in full confidence.",
     sentAgain: 'Send another message',
     footerTagline: 'Impartial · Confidential · In person & online',
+    legalLink: 'LEGAL NOTICE',
+    copyright: '© 2026 Mediation & Dialogue — All rights reserved',
     errAll: 'Please fill in all fields.', errEmail: 'Please enter a valid email address.',
     errSend: 'Something went wrong. Please try again or call us.',
   },
+  de: {
+    pageTitle: 'Mediation & Dialog — Mediation in Ferney-Voltaire',
+    brand: 'Mediation & Dialog',
+    navHome: 'Startseite', navServices: 'Leistungen', navAbout: 'Über mich', navContact: 'Kontakt',
+    badge: 'Familie & Scheidung · Paare · Nachbarschaftskonflikte · Konflikte am Arbeitsplatz',
+    heroTitle: 'Ein ruhigerer Weg durch den Konflikt.',
+    heroSub: 'Wenn ein Gespräch unmöglich scheint, öffnet die Mediation eine Tür. Ein unparteiischer, vertraulicher Raum, in dem beide Seiten gehört werden und echte Vereinbarungen entstehen — ohne Gericht.',
+    ctaSend: 'Anfrage senden', ctaHow: 'So funktioniert es',
+    heroCaption: 'beruhigende Bilder — Licht durch ein Fenster, Hände, ein gemeinsamer Tisch',
+    svc1Title: 'Familie & Scheidung',
+    svc1Body: 'Betreuungsregelungen, Trennung und Finanzen — gemeinsam und in Ruhe entschieden, mit dem Wohl der Kinder im Mittelpunkt.',
+    svc2Title: 'Nachbarschaftskonflikte',
+    svc2Body: 'Lärm, Grundstücksgrenzen, gemeinsam genutzte Flächen und über Jahre angestaute Spannungen — gelöst durch ein ehrliches, begleitetes Gespräch.',
+    svc3Title: 'Konflikte am Arbeitsplatz',
+    svc3Body: 'Spannungen zwischen Kolleginnen und Kollegen, mit Vorgesetzten oder innerhalb eines Teams — entschärft in einem neutralen Rahmen, damit eine ruhige und dauerhafte Zusammenarbeit wieder möglich wird.',
+    svc4Title: 'Paare',
+    svc4Body: 'Kommunikationsprobleme, festgefahrene Meinungsverschiedenheiten, Entscheidungen, die zu zweit getroffen werden müssen — ein Raum, um einander wieder zuzuhören und gemeinsam weiterzugehen, sei es zusammen oder in einer ruhigen Trennung.',
+    svcMore: 'Mehr erfahren →',
+    aboutKicker: 'ÜBER MICH',
+    aboutTitle: 'Eine neutrale, ruhige und menschliche Präsenz.',
+    aboutP1: 'Meine Aufgabe ist es nicht, zu urteilen oder zu entscheiden, sondern einen stabilen Raum zu halten, in dem jede Person endlich sagen kann, was zählt — und eine Vereinbarung zu erarbeiten, an die beide Seiten wirklich glauben.',
+    aboutP2: 'Als akkreditierte Fachperson für Mediation begleite ich Familien, Paare, Nachbarn und Teams am Arbeitsplatz — persönlich wie online, mit Respekt und Vertraulichkeit und ohne jemals Partei zu ergreifen.',
+    aboutCaption: 'Porträt der Mediationsperson',
+    langsLabel: 'Sprachen:', langsValue: 'Deutsch, Englisch, Französisch und Russisch',
+    stepsTitle: 'Drei einfache Schritte',
+    step1Title: 'Kontakt aufnehmen', step1Body: 'Ein erstes kostenloses und unverbindliches Gespräch über Ihre Situation.',
+    step2Title: 'Gemeinsam an einen Tisch', step2Body: 'Persönlich oder online, in einem neutralen und vertraulichen Rahmen.',
+    step3Title: 'Eine Vereinbarung finden', step3Body: 'Sie gehen mit einer klaren, schriftlichen Vereinbarung, die Sie gemeinsam gestaltet haben.',
+    contactKicker: 'KONTAKT',
+    contactTitle: 'Wenn Sie bereit sind.',
+    contactSub: 'Schreiben Sie mir kurz, worum es geht. Ich antworte innerhalb eines Werktags — immer vertraulich.',
+    b1: 'Kostenloses Erstgespräch von 20 Minuten', b2: 'Unparteiisch und vertraulich', b3: 'Persönlich & online',
+    addrLabel: 'Adresse: ', telLabel: 'Telefon: ',
+    formName: 'Name', formNamePh: 'Ihr Name', formEmail: 'E-Mail', formEmailPh: 'sie@beispiel.de',
+    formSit: 'Ihre Situation', formSitPh: 'In wenigen Worten: Was führt Sie hierher?',
+    formSubmit: 'Anfrage senden', formSending: 'Wird gesendet…', formPrivacy: 'Ihre Angaben bleiben streng vertraulich.',
+    formSubject: 'Neue Anfrage über die Website Mediation & Dialog',
+    sentThanksPre: 'Vielen Dank, ', sentBody: 'Ihre Nachricht ist angekommen. Ich antworte Ihnen innerhalb eines Werktags, selbstverständlich vertraulich.',
+    sentAgain: 'Weitere Nachricht senden',
+    footerTagline: 'Unparteiisch · Vertraulich · Persönlich & online',
+    legalLink: 'IMPRESSUM',
+    copyright: '© 2026 Mediation & Dialog — Alle Rechte vorbehalten',
+    errAll: 'Bitte füllen Sie alle Felder aus.', errEmail: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+    errSend: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder rufen Sie uns an.',
+  },
+  ru: {
+    pageTitle: 'Медиация и Диалог — Медиация в Ферне-Вольтере',
+    brand: 'Медиация и Диалог',
+    navHome: 'Главная', navServices: 'Услуги', navAbout: 'Обо мне', navContact: 'Контакты',
+    badge: 'Семья и развод · Пара · Соседские споры · Конфликты на работе',
+    heroTitle: 'Более спокойный путь через конфликт.',
+    heroSub: 'Когда диалог кажется невозможным, медиация открывает дверь. Беспристрастное и конфиденциальное пространство, где каждую сторону слышат и где рождаются настоящие договорённости — без суда.',
+    ctaSend: 'Отправить запрос', ctaHow: 'Как это работает',
+    heroCaption: 'умиротворяющие образы — свет из окна, руки, общий стол',
+    svc1Title: 'Семья и развод',
+    svc1Body: 'Порядок общения с детьми, раздельное проживание и финансы — решения, принятые вместе и спокойно, с заботой о благополучии детей.',
+    svc2Title: 'Соседские споры',
+    svc2Body: 'Шум, границы участков, общие пространства и накопившееся за годы напряжение — разрешаются через честный разговор под руководством медиатора.',
+    svc3Title: 'Конфликты на работе',
+    svc3Body: 'Напряжённость между коллегами, с руководством или внутри команды — снимается в нейтральной обстановке, чтобы вернуть спокойное и устойчивое сотрудничество.',
+    svc4Title: 'Пара',
+    svc4Body: 'Трудности в общении, затянувшиеся разногласия, решения, которые нужно принять вдвоём — пространство, чтобы снова услышать друг друга и двигаться дальше вместе, будь то сохранение отношений или спокойное расставание.',
+    svcMore: 'Подробнее →',
+    aboutKicker: 'ОБО МНЕ',
+    aboutTitle: 'Нейтральное, спокойное и человечное присутствие.',
+    aboutP1: 'Моя роль — не судить и не решать, а создать устойчивое пространство, где каждый наконец сможет сказать о том, что для него важно, — и выстроить соглашение, в которое обе стороны действительно верят.',
+    aboutP2: 'Как аккредитованный медиатор я сопровождаю семьи, пары, соседей и рабочие коллективы — лично и онлайн, с уважением, конфиденциально и никогда не принимая чью-либо сторону.',
+    aboutCaption: 'портрет медиатора',
+    langsLabel: 'Языки:', langsValue: 'английский, немецкий, русский и французский',
+    stepsTitle: 'Три простых шага',
+    step1Title: 'Связаться', step1Body: 'Первый бесплатный и ни к чему не обязывающий разговор о вашей ситуации.',
+    step2Title: 'Сесть за один стол', step2Body: 'Лично или онлайн, в нейтральной и конфиденциальной обстановке.',
+    step3Title: 'Прийти к соглашению', step3Body: 'Вы уходите с ясной письменной договорённостью, которую выработали вместе.',
+    contactKicker: 'КОНТАКТЫ',
+    contactTitle: 'Когда вы будете готовы.',
+    contactSub: 'Напишите коротко о вашей ситуации. Я отвечаю в течение одного рабочего дня — всегда конфиденциально.',
+    b1: 'Бесплатная первая беседа — 20 минут', b2: 'Беспристрастно и конфиденциально', b3: 'Лично и онлайн',
+    addrLabel: 'Адрес: ', telLabel: 'Телефон: ',
+    formName: 'Имя', formNamePh: 'Ваше имя', formEmail: 'Эл. почта', formEmailPh: 'vy@primer.ru',
+    formSit: 'Ваша ситуация', formSitPh: 'В нескольких словах — что вас привело…',
+    formSubmit: 'Отправить запрос', formSending: 'Отправка…', formPrivacy: 'Ваши данные остаются строго конфиденциальными.',
+    formSubject: 'Новый запрос с сайта Медиация и Диалог',
+    sentThanksPre: 'Спасибо, ', sentBody: 'Ваше сообщение получено. Я отвечу вам в течение одного рабочего дня, конфиденциально.',
+    sentAgain: 'Отправить ещё одно сообщение',
+    footerTagline: 'Беспристрастно · Конфиденциально · Лично и онлайн',
+    legalLink: 'ПРАВОВАЯ ИНФОРМАЦИЯ',
+    copyright: '© 2026 Медиация и Диалог — Все права защищены',
+    errAll: 'Пожалуйста, заполните все поля.', errEmail: 'Пожалуйста, введите корректный адрес электронной почты.',
+    errSend: 'Произошла ошибка. Попробуйте ещё раз или позвоните нам.',
+  },
 };
 
-// To activate email delivery:
-// 1. Go to https://formspree.io and create a free account
-// 2. Create a new form and set the destination email to nyounae@yahoo.com
-// 3. Replace YOUR_FORM_ID below with the ID from your Formspree dashboard
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xlgyropk';
+// Language: ?lang=xx in the URL, then the visitor's saved choice, then the
+// browser language, then French.
+
+// Contact form delivery.
+// Submissions are sent by FormSubmit (https://formsubmit.co) straight to the
+// address below — the recipient lives here in the code, not in a third-party
+// dashboard. The very first submission triggers a one-time activation e-mail
+// to this address; once the link in it is clicked, every later message is
+// delivered normally.
+const CONTACT_EMAIL = 'nyounae@yahoo.com';
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/' + CONTACT_EMAIL;
+
+const LANGS = ['fr', 'en', 'de', 'ru'];
+const LANG_KEY = 'md-lang';
+
+function detectLang() {
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('lang');
+    if (fromUrl && LANGS.includes(fromUrl)) return fromUrl;
+  } catch (e) {}
+  try {
+    const saved = window.localStorage.getItem(LANG_KEY);
+    if (saved && LANGS.includes(saved)) return saved;
+  } catch (e) {}
+  // Otherwise follow the browser's preferred languages (fr, en, de, ru only);
+  // any other language falls back to French.
+  try {
+    const prefs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language];
+    for (const pref of prefs) {
+      const code = String(pref || '').slice(0, 2).toLowerCase();
+      if (LANGS.includes(code)) return code;
+    }
+  } catch (e) {}
+  return 'fr';
+}
+
+function applyLangToDocument(lang) {
+  try {
+    document.documentElement.lang = lang;
+    document.title = STRINGS[lang].pageTitle;
+  } catch (e) {}
+}
+
+const SECTIONS = ['accueil', 'services', 'apropos', 'contact'];
 
 class Component extends DCLogic {
-  state = { lang: 'fr', name: '', email: '', message: '', sent: false, submitting: false, error: '' };
+  state = { lang: detectLang(), active: 'accueil', name: '', email: '', message: '', sent: false, submitting: false, error: '' };
+
+  componentDidMount() {
+    applyLangToDocument(this.state.lang);
+    // Scroll spy: highlight the nav link of the section currently on screen.
+    this.__clickLockUntil = 0;
+    this.__onScroll = () => {
+      // Hero photo: zoom in very slightly (up to 6%) as it scrolls up the screen.
+      const hero = document.getElementById('hero-frame');
+      if (hero) {
+        const r = hero.getBoundingClientRect();
+        const vh = window.innerHeight || 1;
+        const progress = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+        hero.style.setProperty('--zoom', (1 + progress * 0.06).toFixed(4));
+      }
+      if (Date.now() < this.__clickLockUntil) return;
+      const y = window.scrollY + 140;
+      let current = 'accueil';
+      for (const id of SECTIONS) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= y) current = id;
+      }
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = 'contact';
+      if (current !== this.state.active) this.setState({ active: current });
+    };
+    window.addEventListener('scroll', this.__onScroll, { passive: true });
+    this.__onScroll();
+  }
+
+  componentWillUnmount() {
+    if (this.__onScroll) window.removeEventListener('scroll', this.__onScroll);
+  }
+
+  goTo(section) {
+    // Mark the clicked link straight away; the scroll spy takes over once the
+    // smooth scroll has finished.
+    this.__clickLockUntil = Date.now() + 900;
+    this.setState({ active: section });
+  }
+
+  setLang(lang) {
+    try { window.localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    applyLangToDocument(lang);
+    this.setState({ lang, error: '' });
+  }
 
   renderVals() {
     const t = STRINGS[this.state.lang];
@@ -305,40 +532,67 @@ class Component extends DCLogic {
         return;
       }
       this.setState({ submitting: true, error: '' });
-      fetch(FORMSPREE_ENDPOINT, {
+      fetch(FORM_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), message: message.trim() }),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+          _subject: tt.formSubject,
+          _replyto: email.trim(),
+          _template: 'table',
+          _captcha: 'false',
+        }),
       })
-        .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+        .then((res) => res.json().then((data) => ({ ok: res.ok, data })).catch(() => ({ ok: res.ok, data: null })))
         .then(({ ok, data }) => {
-          if (ok) {
+          const failed = !ok || (data && String(data.success) === 'false');
+          if (!failed) {
             this.setState({ sent: true, submitting: false, error: '' });
           } else {
-            this.setState({ submitting: false, error: (data && data.error) || STRINGS[this.state.lang].errSend });
+            this.setState({ submitting: false, error: (data && (data.message || data.error)) || STRINGS[this.state.lang].errSend });
           }
         })
         .catch(() => {
           this.setState({ submitting: false, error: STRINGS[this.state.lang].errSend });
         });
     };
-    const baseBtn = "border: none; background: transparent; padding: 6px 12px; border-radius: 6px; font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; letter-spacing: 0.03em;";
+    const baseBtn = "border: none; background: transparent; padding: 6px 12px; border-radius: 6px; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; letter-spacing: 0.03em;";
     const active = "background: #4f6b57; color: #fff;";
     const inactive = "color: #6c7a6c;";
+    const btnStyle = (lang) => baseBtn + (this.state.lang === lang ? active : inactive);
+    const navLink = (section) => 'text-decoration: none; padding-bottom: 3px; border-bottom: 2px solid ' +
+      (this.state.active === section ? '#4f6b57; color: #232a23; font-weight: 700;' : 'transparent; color: #5a6359; font-weight: 500;');
+    const navContactStyle = 'text-decoration: none; border: 1.5px solid ' +
+      (this.state.active === 'contact' ? '#4f6b57; background: #4f6b57; color: #fff; font-weight: 700;' : '#c4d1c0; color: #3c4d3e;') +
+      ' padding: 10px 20px; border-radius: 8px;';
     return {
       t,
+      navHomeStyle: navLink('accueil'),
+      navServicesStyle: navLink('services'),
+      navAboutStyle: navLink('apropos'),
+      navContactStyle,
+      goHome: () => this.goTo('accueil'),
+      goServices: () => this.goTo('services'),
+      goAbout: () => this.goTo('apropos'),
+      goContact: () => this.goTo('contact'),
       name: this.state.name, email: this.state.email, message: this.state.message,
       sent: this.state.sent, notSent: !this.state.sent, error: this.state.error,
       submitting: this.state.submitting,
       submitLabel: this.state.submitting ? t.formSending : t.formSubmit,
-      submitBtnStyle: 'margin-top: 4px; background: ' + (this.state.submitting ? '#7d9a80' : '#4f6b57') + '; color: #fff; border: none; padding: 15px; border-radius: 10px; font-weight: 600; font-size: 15.5px; font-family: \'Hanken Grotesk\', sans-serif; cursor: ' + (this.state.submitting ? 'not-allowed' : 'pointer') + '; opacity: ' + (this.state.submitting ? '0.7' : '1') + ';',
+      submitBtnStyle: 'margin-top: 4px; background: ' + (this.state.submitting ? '#7d9a80' : '#4f6b57') + '; color: #fff; border: none; padding: 15px; border-radius: 10px; font-weight: 600; font-size: 15.5px; font-family: \'Hanken Grotesk\', \'Manrope\', sans-serif; cursor: ' + (this.state.submitting ? 'not-allowed' : 'pointer') + '; opacity: ' + (this.state.submitting ? '0.7' : '1') + ';',
       onName: set('name'), onEmail: set('email'), onMessage: set('message'),
       submit,
       reset: () => this.setState({ name: '', email: '', message: '', sent: false, submitting: false, error: '' }),
-      setFr: () => this.setState({ lang: 'fr', error: '' }),
-      setEn: () => this.setState({ lang: 'en', error: '' }),
-      frBtnStyle: baseBtn + (this.state.lang === 'fr' ? active : inactive),
-      enBtnStyle: baseBtn + (this.state.lang === 'en' ? active : inactive),
+      setFr: () => this.setLang('fr'),
+      setEn: () => this.setLang('en'),
+      setDe: () => this.setLang('de'),
+      setRu: () => this.setLang('ru'),
+      frBtnStyle: btnStyle('fr'),
+      enBtnStyle: btnStyle('en'),
+      deBtnStyle: btnStyle('de'),
+      ruBtnStyle: btnStyle('ru'),
     };
   }
 }

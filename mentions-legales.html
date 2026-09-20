@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentions légales — Médiation &amp; Dialogue</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -10,77 +11,227 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #f5f7f3; }
   @media (max-width: 760px) {
     .wrap { padding-left: 22px !important; padding-right: 22px !important; }
     .ml-h1 { font-size: 38px !important; }
+    .nav-right { gap: 12px !important; }
+    .lang-btn { padding: 5px 8px !important; font-size: 12px !important; }
+  }
+  @media (max-width: 560px) {
+    .brand-text { display: none !important; }
+    .back-top { display: none !important; }
   }
 </style>
 </helmet>
 
-<div style="background: #f5f7f3; color: #2f352f; font-family: 'Hanken Grotesk', sans-serif; min-height: 100vh;">
+<div style="background: #f5f7f3; color: #2f352f; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; min-height: 100vh;">
 
   <!-- nav -->
   <div style="border-bottom: 1px solid #e4ebe0; background: #f5f7f3;">
     <div class="wrap" style="max-width: 880px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px;">
-      <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="index.html" title="{{ t.back }}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
         <img src="logo.jpeg" alt="Médiation & Dialogue" style="width: 38px; height: 38px; border-radius: 999px; object-fit: cover; display: block;" />
-        <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: #283328;">Médiation &amp; Dialogue</span>
+        <span class="brand-text" style="font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: #283328;">{{ t.brand }}</span>
+      </a>
+      <div class="nav-right" style="display: flex; align-items: center; gap: 24px;">
+        <a class="back-top" href="index.html" style="text-decoration: none; font-size: 14px; font-weight: 600; color: #4f6b57;">{{ t.back }}</a>
+        <div style="display: flex; align-items: center; gap: 2px; background: #fff; border: 1.5px solid #d4ddd0; border-radius: 8px; padding: 3px;">
+          <button class="lang-btn" onClick="{{ setFr }}" style="{{ frBtnStyle }}" aria-label="Français">FR</button>
+          <button class="lang-btn" onClick="{{ setEn }}" style="{{ enBtnStyle }}" aria-label="English">EN</button>
+          <button class="lang-btn" onClick="{{ setDe }}" style="{{ deBtnStyle }}" aria-label="Deutsch">DE</button>
+          <button class="lang-btn" onClick="{{ setRu }}" style="{{ ruBtnStyle }}" aria-label="Русский">RU</button>
+        </div>
       </div>
-      <a href="index.html" style="text-decoration: none; font-size: 14px; font-weight: 600; color: #4f6b57;">← Retour à l'accueil</a>
     </div>
   </div>
 
   <!-- content -->
   <div class="wrap" style="max-width: 880px; margin: 0 auto; padding: 72px 40px 96px;">
-    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.12em; margin-bottom: 16px;">INFORMATIONS LÉGALES</div>
-    <h1 class="ml-h1" style="font-weight: 700; font-size: 52px; line-height: 1.05; letter-spacing: -0.025em; color: #232a23; margin: 0 0 56px;">Mentions légales</h1>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7d9a80; letter-spacing: 0.12em; margin-bottom: 16px;">{{ t.kicker }}</div>
+    <h1 class="ml-h1" style="font-weight: 700; font-size: 52px; line-height: 1.05; letter-spacing: -0.025em; color: #232a23; margin: 0 0 56px;">{{ t.title }}</h1>
 
     <div style="display: flex; flex-direction: column; gap: 44px;">
 
       <section>
-        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">RESPONSABLE DE PUBLICATION</h2>
+        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">{{ t.publisherHead }}</h2>
         <div style="background: #fff; border: 1px solid #e7ede4; border-radius: 14px; padding: 26px 30px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; color: #3c4d3e;">
-          <div><span style="color: #7d9a80; font-weight: 600;">Nom : </span>Sylvie Kuenen</div>
-          <div><span style="color: #7d9a80; font-weight: 600;">Téléphone : </span><a href="tel:+33644977252" style="color: #4f6b57; text-decoration: none;">06 44 97 72 52</a></div>
-          <div><span style="color: #7d9a80; font-weight: 600;">Email : </span><a href="mailto:nyounae@yahoo.com" style="color: #4f6b57; text-decoration: none;">nyounae@yahoo.com</a></div>
+          <div><span style="color: #7d9a80; font-weight: 600;">{{ t.nameLabel }}</span>Sylvie Kuenen</div>
+          <div><span style="color: #7d9a80; font-weight: 600;">{{ t.phoneLabel }}</span><a href="tel:+33644977252" style="color: #4f6b57; text-decoration: none;">06 44 97 72 52</a></div>
+          <div><span style="color: #7d9a80; font-weight: 600;">{{ t.emailLabel }}</span><a href="mailto:nyounae@yahoo.com" style="color: #4f6b57; text-decoration: none;">nyounae@yahoo.com</a></div>
         </div>
       </section>
 
       <section>
-        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">HÉBERGEMENT DU SITE</h2>
+        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">{{ t.hostingHead }}</h2>
         <p style="font-size: 16.5px; line-height: 1.7; color: #4a544a; margin: 0;">GitHub</p>
       </section>
 
       <section>
-        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">DROITS D'AUTEUR</h2>
-        <p style="font-size: 16.5px; line-height: 1.7; color: #4a544a; margin: 0;">L'ensemble des éléments constituant le site (textes, images, vidéos, sons, logos) ainsi que le site lui-même, relèvent des législations françaises et internationales sur le droit d'auteur et la propriété intellectuelle. Ces éléments sont la propriété exclusive de l'éditeur du site hormis les éléments réalisés par des intervenants extérieurs n'ayant pas cédé leurs droits d'auteurs ou leurs droits voisins.</p>
+        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">{{ t.copyrightHead }}</h2>
+        <p style="font-size: 16.5px; line-height: 1.7; color: #4a544a; margin: 0;">{{ t.copyrightBody }}</p>
       </section>
 
       <section>
-        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">COOKIES</h2>
-        <p style="font-size: 16.5px; line-height: 1.7; color: #4a544a; margin: 0;">Lors de la navigation sur ce site, des cookies peuvent être importés sur votre ordinateur. Ceux-ci ne permettent pas de vous identifier, mais ils enregistrent des informations relatives à la navigation que le programme pourra lire lors de vos visites ultérieures. Les cookies sont en général utilisés pour conserver vos préférences utilisateur, stocker des informations en vue de retenir le contenu d'un panier par exemple ou fournir des données de suivi anonymes à des applications tierces comme Google Analytics. Vous pouvez vous opposer à l'enregistrement de cookies en configurant votre navigateur internet.</p>
+        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">{{ t.cookiesHead }}</h2>
+        <p style="font-size: 16.5px; line-height: 1.7; color: #4a544a; margin: 0;">{{ t.cookiesBody }}</p>
       </section>
 
       <section>
-        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">CRÉDITS</h2>
-        <p style="font-size: 16.5px; line-height: 1.7; color: #4a544a; margin: 0 0 14px;">Les contenus intégrés dans ce site restent la propriété intellectuelle de leurs auteurs respectifs :</p>
+        <h2 style="font-weight: 700; font-size: 16px; letter-spacing: 0.04em; color: #4f6b57; margin: 0 0 16px;">{{ t.creditsHead }}</h2>
+        <p style="font-size: 16.5px; line-height: 1.7; color: #4a544a; margin: 0 0 14px;">{{ t.creditsBody }}</p>
         <ul style="margin: 0; padding-left: 22px; color: #4a544a; font-size: 16.5px; line-height: 1.7;">
-          <li>Crédits photos : Sylvie Kuenen</li>
+          <li>{{ t.creditsPhoto }}</li>
         </ul>
       </section>
 
     </div>
 
     <div style="margin-top: 64px; padding-top: 28px; border-top: 1px solid #e1e8dd;">
-      <a href="index.html" style="text-decoration: none; font-size: 14.5px; font-weight: 600; color: #4f6b57;">← Retour à l'accueil</a>
+      <a href="index.html" style="text-decoration: none; font-size: 14.5px; font-weight: 600; color: #4f6b57;">{{ t.back }}</a>
     </div>
   </div>
 
 </div>
 </x-dc>
+<script type="text/x-dc" data-dc-script>
+const STRINGS = {
+  fr: {
+    pageTitle: 'Mentions légales — Médiation & Dialogue',
+    brand: 'Médiation & Dialogue',
+    back: "← Retour à l'accueil",
+    kicker: 'INFORMATIONS LÉGALES',
+    title: 'Mentions légales',
+    publisherHead: 'RESPONSABLE DE PUBLICATION',
+    nameLabel: 'Nom : ', phoneLabel: 'Téléphone : ', emailLabel: 'Email : ',
+    hostingHead: 'HÉBERGEMENT DU SITE',
+    copyrightHead: "DROITS D'AUTEUR",
+    copyrightBody: "L'ensemble des éléments constituant le site (textes, images, vidéos, sons, logos) ainsi que le site lui-même, relèvent des législations françaises et internationales sur le droit d'auteur et la propriété intellectuelle. Ces éléments sont la propriété exclusive de l'éditeur du site hormis les éléments réalisés par des intervenants extérieurs n'ayant pas cédé leurs droits d'auteurs ou leurs droits voisins.",
+    cookiesHead: 'COOKIES',
+    cookiesBody: "Lors de la navigation sur ce site, des cookies peuvent être importés sur votre ordinateur. Ceux-ci ne permettent pas de vous identifier, mais ils enregistrent des informations relatives à la navigation que le programme pourra lire lors de vos visites ultérieures. Les cookies sont en général utilisés pour conserver vos préférences utilisateur, stocker des informations en vue de retenir le contenu d'un panier par exemple ou fournir des données de suivi anonymes à des applications tierces comme Google Analytics. Vous pouvez vous opposer à l'enregistrement de cookies en configurant votre navigateur internet.",
+    creditsHead: 'CRÉDITS',
+    creditsBody: 'Les contenus intégrés dans ce site restent la propriété intellectuelle de leurs auteurs respectifs :',
+    creditsPhoto: 'Crédits photos : Sylvie Kuenen',
+  },
+  en: {
+    pageTitle: 'Legal notice — Mediation & Dialogue',
+    brand: 'Mediation & Dialogue',
+    back: '← Back to home',
+    kicker: 'LEGAL INFORMATION',
+    title: 'Legal notice',
+    publisherHead: 'PUBLISHER',
+    nameLabel: 'Name: ', phoneLabel: 'Phone: ', emailLabel: 'Email: ',
+    hostingHead: 'WEBSITE HOSTING',
+    copyrightHead: 'COPYRIGHT',
+    copyrightBody: "All elements making up this website (texts, images, videos, sounds, logos), as well as the website itself, are governed by French and international legislation on copyright and intellectual property. These elements are the exclusive property of the site's publisher, except for elements produced by external contributors who have not assigned their copyright or related rights.",
+    cookiesHead: 'COOKIES',
+    cookiesBody: 'While browsing this website, cookies may be stored on your computer. They do not identify you personally, but they record information about your browsing that the program can read on subsequent visits. Cookies are generally used to save your user preferences, to store information such as the contents of a shopping basket, or to provide anonymous tracking data to third-party applications such as Google Analytics. You can refuse the storage of cookies by configuring your web browser.',
+    creditsHead: 'CREDITS',
+    creditsBody: 'Content embedded in this website remains the intellectual property of its respective authors:',
+    creditsPhoto: 'Photo credits: Sylvie Kuenen',
+  },
+  de: {
+    pageTitle: 'Impressum — Mediation & Dialog',
+    brand: 'Mediation & Dialog',
+    back: '← Zurück zur Startseite',
+    kicker: 'RECHTLICHE HINWEISE',
+    title: 'Impressum',
+    publisherHead: 'VERANTWORTLICH FÜR DEN INHALT',
+    nameLabel: 'Name: ', phoneLabel: 'Telefon: ', emailLabel: 'E-Mail: ',
+    hostingHead: 'HOSTING DER WEBSITE',
+    copyrightHead: 'URHEBERRECHT',
+    copyrightBody: 'Sämtliche Bestandteile dieser Website (Texte, Bilder, Videos, Töne, Logos) sowie die Website selbst unterliegen der französischen und internationalen Gesetzgebung zum Urheberrecht und zum geistigen Eigentum. Diese Elemente sind ausschließliches Eigentum des Herausgebers der Website, mit Ausnahme der Beiträge externer Mitwirkender, die ihre Urheber- oder verwandten Schutzrechte nicht abgetreten haben.',
+    cookiesHead: 'COOKIES',
+    cookiesBody: 'Beim Besuch dieser Website können Cookies auf Ihrem Computer gespeichert werden. Diese ermöglichen keine Identifizierung Ihrer Person, speichern jedoch Informationen über Ihre Navigation, die das Programm bei späteren Besuchen lesen kann. Cookies dienen in der Regel dazu, Ihre Benutzereinstellungen zu speichern, Informationen wie den Inhalt eines Warenkorbs zu behalten oder anonyme Nutzungsdaten an Drittanwendungen wie Google Analytics zu übermitteln. Sie können die Speicherung von Cookies in den Einstellungen Ihres Browsers ablehnen.',
+    creditsHead: 'NACHWEISE',
+    creditsBody: 'Die auf dieser Website eingebundenen Inhalte bleiben geistiges Eigentum ihrer jeweiligen Urheber:',
+    creditsPhoto: 'Bildnachweis: Sylvie Kuenen',
+  },
+  ru: {
+    pageTitle: 'Правовая информация — Медиация и Диалог',
+    brand: 'Медиация и Диалог',
+    back: '← На главную',
+    kicker: 'ПРАВОВАЯ ИНФОРМАЦИЯ',
+    title: 'Правовая информация',
+    publisherHead: 'ОТВЕТСТВЕННЫЙ ЗА ПУБЛИКАЦИЮ',
+    nameLabel: 'Имя: ', phoneLabel: 'Телефон: ', emailLabel: 'Эл. почта: ',
+    hostingHead: 'ХОСТИНГ САЙТА',
+    copyrightHead: 'АВТОРСКИЕ ПРАВА',
+    copyrightBody: 'Все элементы, составляющие сайт (тексты, изображения, видео, звуки, логотипы), а также сам сайт регулируются французским и международным законодательством об авторском праве и интеллектуальной собственности. Эти элементы являются исключительной собственностью издателя сайта, за исключением материалов, созданных внешними авторами, не передавшими свои авторские или смежные права.',
+    cookiesHead: 'ФАЙЛЫ COOKIE',
+    cookiesBody: 'При просмотре этого сайта на ваш компьютер могут быть записаны файлы cookie. Они не позволяют идентифицировать вас, но сохраняют сведения о навигации, которые программа сможет прочитать при ваших последующих посещениях. Файлы cookie обычно используются для сохранения пользовательских настроек, хранения информации, например содержимого корзины, или передачи анонимных данных о посещениях сторонним приложениям, таким как Google Analytics. Вы можете запретить сохранение файлов cookie в настройках вашего браузера.',
+    creditsHead: 'АВТОРЫ',
+    creditsBody: 'Материалы, размещённые на этом сайте, остаются интеллектуальной собственностью их авторов:',
+    creditsPhoto: 'Фотографии: Sylvie Kuenen',
+  },
+};
+
+// Language: ?lang=xx in the URL, then the visitor's saved choice (shared with
+// the home page), then the browser language, then French.
+const LANGS = ['fr', 'en', 'de', 'ru'];
+const LANG_KEY = 'md-lang';
+
+function detectLang() {
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('lang');
+    if (fromUrl && LANGS.includes(fromUrl)) return fromUrl;
+  } catch (e) {}
+  try {
+    const saved = window.localStorage.getItem(LANG_KEY);
+    if (saved && LANGS.includes(saved)) return saved;
+  } catch (e) {}
+  try {
+    const prefs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language];
+    for (const pref of prefs) {
+      const code = String(pref || '').slice(0, 2).toLowerCase();
+      if (LANGS.includes(code)) return code;
+    }
+  } catch (e) {}
+  return 'fr';
+}
+
+function applyLangToDocument(lang) {
+  try {
+    document.documentElement.lang = lang;
+    document.title = STRINGS[lang].pageTitle;
+  } catch (e) {}
+}
+
+class Component extends DCLogic {
+  state = { lang: detectLang() };
+
+  componentDidMount() {
+    applyLangToDocument(this.state.lang);
+  }
+
+  setLang(lang) {
+    try { window.localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    applyLangToDocument(lang);
+    this.setState({ lang });
+  }
+
+  renderVals() {
+    const t = STRINGS[this.state.lang];
+    const baseBtn = "border: none; background: transparent; padding: 6px 12px; border-radius: 6px; font-family: 'Hanken Grotesk', 'Manrope', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; letter-spacing: 0.03em;";
+    const active = "background: #4f6b57; color: #fff;";
+    const inactive = "color: #6c7a6c;";
+    const btnStyle = (lang) => baseBtn + (this.state.lang === lang ? active : inactive);
+    return {
+      t,
+      setFr: () => this.setLang('fr'),
+      setEn: () => this.setLang('en'),
+      setDe: () => this.setLang('de'),
+      setRu: () => this.setLang('ru'),
+      frBtnStyle: btnStyle('fr'),
+      enBtnStyle: btnStyle('en'),
+      deBtnStyle: btnStyle('de'),
+      ruBtnStyle: btnStyle('ru'),
+    };
+  }
+}
+</script>
 </body>
 </html>
