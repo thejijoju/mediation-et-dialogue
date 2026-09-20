@@ -35,12 +35,14 @@
     .photo-frame:hover .photo-img { transform: scale(var(--zoom, 1)); }
   }
   input:focus, textarea:focus { outline: none; border-color: #4f6b57; }
+  @media (max-width: 960px) {
+    .steps-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 28px !important; }
+  }
   @media (max-width: 760px) {
     .wrap { padding-left: 22px !important; padding-right: 22px !important; }
-    .two-col, .about-grid, .contact-grid, .three-col { grid-template-columns: 1fr !important; }
+    .two-col, .about-grid, .contact-grid, .steps-grid { grid-template-columns: 1fr !important; }
     .about-grid { gap: 32px !important; }
     .contact-grid { gap: 36px !important; }
-    .three-col { gap: 28px !important; }
     .h1-hero { font-size: 38px !important; line-height: 1.1 !important; }
     .hero-sub { font-size: 17px !important; }
     .hero-pad { padding-top: 56px !important; padding-bottom: 52px !important; }
@@ -151,8 +153,9 @@
   <!-- étapes -->
   <div id="etapes" style="background: #e9f0e6;">
     <div class="wrap" style="max-width: 1180px; margin: 0 auto; padding: 76px 40px;">
-      <h2 style="font-weight: 700; font-size: 32px; color: #232a23; margin: 0 0 44px; letter-spacing: -0.02em;">{{ t.stepsTitle }}</h2>
-      <div class="three-col" style="display: grid; grid-template-columns: repeat(3,1fr); gap: 36px;">
+      <h2 style="font-weight: 700; font-size: 32px; color: #232a23; margin: 0 0 16px; letter-spacing: -0.02em;">{{ t.stepsTitle }}</h2>
+      <p style="font-size: 16.5px; line-height: 1.62; color: #5a6359; margin: 0 0 44px; max-width: 640px;">{{ t.stepsIntro }}</p>
+      <div class="steps-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;">
         <div>
           <div style="font-weight: 700; font-size: 40px; color: #4f6b57; margin-bottom: 12px;">1</div>
           <h4 style="font-size: 18px; color: #283328; margin: 0 0 8px; font-weight: 600;">{{ t.step1Title }}</h4>
@@ -167,6 +170,11 @@
           <div style="font-weight: 700; font-size: 40px; color: #4f6b57; margin-bottom: 12px;">3</div>
           <h4 style="font-size: 18px; color: #283328; margin: 0 0 8px; font-weight: 600;">{{ t.step3Title }}</h4>
           <p style="font-size: 14.5px; line-height: 1.6; color: #5a6359; margin: 0;">{{ t.step3Body }}</p>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 40px; color: #4f6b57; margin-bottom: 12px;">4</div>
+          <h4 style="font-size: 18px; color: #283328; margin: 0 0 8px; font-weight: 600;">{{ t.step4Title }}</h4>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #5a6359; margin: 0;">{{ t.step4Body }}</p>
         </div>
       </div>
     </div>
@@ -270,10 +278,12 @@ const STRINGS = {
     aboutP2: "Médiateur accrédité, j'accompagne familles, couples, voisins et équipes de travail en personne comme en ligne, dans le respect, la confidentialité et sans jamais prendre parti.",
     aboutCaption: 'portrait du médiateur',
     langsLabel: 'Langues parlées :', langsValue: 'allemand, anglais, français et russe',
-    stepsTitle: 'Trois étapes simples',
-    step1Title: 'Prendre contact', step1Body: 'Un premier appel gratuit et sans engagement pour parler de votre situation.',
-    step2Title: "S'asseoir ensemble", step2Body: 'En personne ou en ligne, dans un espace neutre et confidentiel.',
-    step3Title: 'Trouver un accord', step3Body: 'Repartez avec une entente claire et écrite que vous avez façonnée ensemble.',
+    stepsTitle: 'Comment se déroule une médiation',
+    stepsIntro: 'Chaque médiation suit un cadre clair et structuré, en quatre temps. Les entretiens commencent toujours individuellement, avant de réunir les parties.',
+    step1Title: 'Prise de contact', step1Body: 'Un premier échange gratuit et sans engagement, par téléphone, pour présenter votre situation et vérifier que la médiation est adaptée.',
+    step2Title: 'Entretiens individuels', step2Body: "Chaque partie est reçue séparément, en toute confidentialité, pour exposer son point de vue, ses attentes et ses préoccupations, et s'approprier le cadre de la médiation.",
+    step3Title: 'Séances communes', step3Body: 'Les parties se retrouvent ensemble, en présence du médiateur, dans un espace neutre et structuré où chacun est écouté et où les options sont explorées.',
+    step4Title: 'Accord', step4Body: "Les solutions retenues sont formalisées dans un accord écrit, rédigé ensemble, que chacun s'engage à respecter.",
     contactKicker: 'CONTACT',
     contactTitle: 'Quand vous serez prêt.',
     contactSub: "Envoyez un court message au sujet de votre situation. Je réponds sous un jour ouvré — toujours en toute confidentialité.",
@@ -315,10 +325,12 @@ const STRINGS = {
     aboutP2: 'An accredited mediator, I work with families, couples, neighbors and workplace teams in person and online — with respect, confidentiality, and never taking sides.',
     aboutCaption: 'mediator portrait',
     langsLabel: 'Languages spoken:', langsValue: 'English, French, German and Russian',
-    stepsTitle: 'Three simple steps',
-    step1Title: 'Reach out', step1Body: 'A free, no-pressure intro call to talk through your situation.',
-    step2Title: 'Sit down together', step2Body: 'In person or online, in a neutral, confidential space.',
-    step3Title: 'Reach an agreement', step3Body: 'Leave with a clear, written understanding you both shaped.',
+    stepsTitle: 'How a mediation unfolds',
+    stepsIntro: 'Every mediation follows a clear, structured framework in four stages. Meetings always begin individually before the parties are brought together.',
+    step1Title: 'Initial contact', step1Body: 'A free, no-obligation first conversation by phone to outline your situation and confirm that mediation is the right approach.',
+    step2Title: 'Individual meetings', step2Body: 'Each party is met separately and in strict confidence, to set out their perspective, expectations and concerns, and to become familiar with how mediation works.',
+    step3Title: 'Joint sessions', step3Body: 'The parties come together in the presence of the mediator, in a neutral, structured setting where everyone is heard and options are explored.',
+    step4Title: 'Agreement', step4Body: 'The solutions chosen are set down in a written agreement, drafted together, that each party commits to honouring.',
     contactKicker: 'CONTACT',
     contactTitle: "Whenever you're ready.",
     contactSub: 'Send a short message about your situation. I reply within one working day — always confidential.',
@@ -360,10 +372,12 @@ const STRINGS = {
     aboutP2: 'Als akkreditierte Fachperson für Mediation begleite ich Familien, Paare, Nachbarn und Teams am Arbeitsplatz — persönlich wie online, mit Respekt und Vertraulichkeit und ohne jemals Partei zu ergreifen.',
     aboutCaption: 'Porträt der Mediationsperson',
     langsLabel: 'Sprachen:', langsValue: 'Deutsch, Englisch, Französisch und Russisch',
-    stepsTitle: 'Drei einfache Schritte',
-    step1Title: 'Kontakt aufnehmen', step1Body: 'Ein erstes kostenloses und unverbindliches Gespräch über Ihre Situation.',
-    step2Title: 'Gemeinsam an einen Tisch', step2Body: 'Persönlich oder online, in einem neutralen und vertraulichen Rahmen.',
-    step3Title: 'Eine Vereinbarung finden', step3Body: 'Sie gehen mit einer klaren, schriftlichen Vereinbarung, die Sie gemeinsam gestaltet haben.',
+    stepsTitle: 'So läuft eine Mediation ab',
+    stepsIntro: 'Jede Mediation folgt einem klaren, strukturierten Rahmen in vier Schritten. Die Gespräche beginnen immer einzeln, bevor die Parteien zusammenkommen.',
+    step1Title: 'Erstkontakt', step1Body: 'Ein erstes kostenloses und unverbindliches Telefongespräch, um Ihre Situation zu schildern und zu klären, ob eine Mediation der richtige Weg ist.',
+    step2Title: 'Einzelgespräche', step2Body: 'Jede Partei wird getrennt und streng vertraulich empfangen, um ihre Sichtweise, Erwartungen und Anliegen darzulegen und sich mit dem Rahmen der Mediation vertraut zu machen.',
+    step3Title: 'Gemeinsame Sitzungen', step3Body: 'Die Parteien kommen in Anwesenheit der Mediationsperson zusammen, in einem neutralen, strukturierten Rahmen, in dem jede Person gehört wird und Lösungswege erkundet werden.',
+    step4Title: 'Vereinbarung', step4Body: 'Die gewählten Lösungen werden in einer gemeinsam verfassten schriftlichen Vereinbarung festgehalten, zu deren Einhaltung sich jede Partei verpflichtet.',
     contactKicker: 'KONTAKT',
     contactTitle: 'Wenn Sie bereit sind.',
     contactSub: 'Schreiben Sie mir kurz, worum es geht. Ich antworte innerhalb eines Werktags — immer vertraulich.',
@@ -405,10 +419,12 @@ const STRINGS = {
     aboutP2: 'Как аккредитованный медиатор я сопровождаю семьи, пары, соседей и рабочие коллективы — лично и онлайн, с уважением, конфиденциально и никогда не принимая чью-либо сторону.',
     aboutCaption: 'портрет медиатора',
     langsLabel: 'Языки:', langsValue: 'английский, немецкий, русский и французский',
-    stepsTitle: 'Три простых шага',
-    step1Title: 'Связаться', step1Body: 'Первый бесплатный и ни к чему не обязывающий разговор о вашей ситуации.',
-    step2Title: 'Сесть за один стол', step2Body: 'Лично или онлайн, в нейтральной и конфиденциальной обстановке.',
-    step3Title: 'Прийти к соглашению', step3Body: 'Вы уходите с ясной письменной договорённостью, которую выработали вместе.',
+    stepsTitle: 'Как проходит медиация',
+    stepsIntro: 'Каждая медиация проходит в чётких и структурированных рамках, в четыре этапа. Встречи всегда начинаются индивидуально, и лишь затем стороны встречаются вместе.',
+    step1Title: 'Первый контакт', step1Body: 'Первый бесплатный и ни к чему не обязывающий разговор по телефону, чтобы изложить вашу ситуацию и понять, подходит ли медиация.',
+    step2Title: 'Индивидуальные встречи', step2Body: 'Каждая сторона принимается отдельно и строго конфиденциально, чтобы изложить свою точку зрения, ожидания и опасения и освоиться с рамками медиации.',
+    step3Title: 'Совместные сессии', step3Body: 'Стороны встречаются вместе в присутствии медиатора, в нейтральной и структурированной обстановке, где каждого слушают и вместе рассматривают возможные решения.',
+    step4Title: 'Соглашение', step4Body: 'Выбранные решения закрепляются в письменном соглашении, составленном совместно, которое каждая сторона обязуется соблюдать.',
     contactKicker: 'КОНТАКТЫ',
     contactTitle: 'Когда вы будете готовы.',
     contactSub: 'Напишите коротко о вашей ситуации. Я отвечаю в течение одного рабочего дня — всегда конфиденциально.',
