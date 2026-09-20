@@ -51,6 +51,11 @@
     .hide-sm { display: none !important; }
     .footer-row { flex-direction: column !important; align-items: flex-start !important; }
     .footer-right { align-items: flex-start !important; text-align: left !important; }
+    /* Hero photo on phones: edge to edge, taller crop, no frame */
+    #hero-frame { margin: 40px -22px 0 !important; padding: 0 !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; box-shadow: none !important; }
+    #hero-frame:hover { transform: none !important; }
+    #hero-frame .photo-clip { border-radius: 0 !important; aspect-ratio: 4/5 !important; }
+    #hero-frame .photo-img { object-position: center 55% !important; }
   }
   @media (max-width: 560px) {
     .brand-text { display: none !important; }
