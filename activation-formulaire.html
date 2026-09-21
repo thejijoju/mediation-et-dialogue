@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Activation du formulaire — Médiation &amp; Dialogue</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f5f7f3; color: #2f352f; font-family: 'Hanken Grotesk', sans-serif; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 64px 22px 96px; }
+  h1 { font-size: 30px; letter-spacing: -0.02em; color: #232a23; margin: 0 0 14px; }
+  p, li { font-size: 16px; line-height: 1.6; color: #5a6359; }
+  ol { padding-left: 22px; }
+  .card { background: #fff; border: 1px solid #e7ede4; border-radius: 16px; padding: 28px; margin-top: 28px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: #3c4d3e; margin: 14px 0 6px; }
+  input, textarea { width: 100%; border: 1.5px solid #dde6d8; border-radius: 9px; background: #f7faf5; padding: 11px 14px; font: inherit; font-size: 14.5px; color: #2f352f; }
+  textarea { height: 90px; resize: vertical; }
+  button { margin-top: 20px; width: 100%; background: #4f6b57; color: #fff; border: none; padding: 15px; border-radius: 10px; font: inherit; font-weight: 600; font-size: 15.5px; cursor: pointer; }
+  .note { font-size: 13.5px; color: #7a837a; margin-top: 14px; }
+  a { color: #4f6b57; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Activation du formulaire de contact</h1>
+  <p>Cette page sert une seule fois, pour activer la réception des messages du site sur <strong>nyounae@yahoo.com</strong>. Elle n'est pas reliée au site et n'est pas indexée.</p>
+  <ol>
+    <li>Cliquez sur le bouton ci-dessous. Une page de FormSubmit peut vous demander de cocher une case anti-robot.</li>
+    <li>Ouvrez la boîte nyounae@yahoo.com, y compris le dossier « Indésirables », et cherchez un e-mail de FormSubmit.</li>
+    <li>Cliquez sur le lien <strong>Activate Form</strong>. À partir de là, tous les messages du formulaire du site arrivent normalement.</li>
+  </ol>
+  <div class="card">
+    <form action="https://formsubmit.co/nyounae@yahoo.com" method="POST">
+      <input type="hidden" name="_subject" value="Activation du formulaire — Médiation & Dialogue">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://mediationetdialogue.com/activation-formulaire.html?envoye=1">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <label for="name">Nom</label>
+      <input id="name" type="text" name="name" value="Test d'activation" required>
+      <label for="email">E-mail</label>
+      <input id="email" type="email" name="email" value="nyounae@yahoo.com" required>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required>Envoi de test pour activer le formulaire de contact du site.</textarea>
+      <button type="submit">Envoyer l'envoi d'activation</button>
+    </form>
+    <p class="note" id="done" hidden>Envoi effectué. Vérifiez maintenant la boîte nyounae@yahoo.com, y compris les indésirables.</p>
+  </div>
+  <p class="note"><a href="index.html">← Retour au site</a></p>
+</div>
+<script>
+  if (new URLSearchParams(location.search).get('envoye') === '1') {
+    document.getElementById('done').hidden = false;
+  }
+</script>
+</body>
+</html>
